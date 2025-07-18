@@ -6,5 +6,11 @@ a.addEventListener("click",function()
 let b = document.querySelector("#Read");
 b.addEventListener("click",function()
 {
-    window.location.href = "../ReadingAStory/read.html";
+    window.location.href = "../Feed/feed.html";
+});
+
+let c = document.querySelector("#search");
+c.addEventListener("click",function()
+{
+    window.location.href = "../Search/search.html";
 });
