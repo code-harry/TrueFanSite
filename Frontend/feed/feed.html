@@ -3,41 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Story Feed</title>
-    <style>
-        .story-card {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px;
-            cursor: pointer;
-        }
-        .story-card:hover {
-            background-color: #f0f0f0;
-        }
-    </style>
+    
+
+   
+<script src="Feed.js" defer></script>
+    <link rel="stylesheet" href="Feed.css">
 </head>
 <body>
     <h1>Story Feed</h1>
     <div id="storyFeed"></div>
 
-    <script>
-        async function fetchStories() {
-            const response = await fetch('http://localhost:8080/api/stories');
-            const stories = await response.json();
-            const feed = document.getElementById('storyFeed');
 
-            stories.forEach(story => {
-                const div = document.createElement('div');
-                div.className = 'story-card';
-                div.innerHTML = `<h2>${story.title}</h2><p><strong>Language:</strong> ${story.language}</p>`;
-                div.onclick = () => {
-                    // Pass the story title in URL
-                    window.location.href = `../Story/story.html?title=${encodeURIComponent(story.title)}`;
-                };
-                feed.appendChild(div);
-            });
-        }
-
-        fetchStories();
-    </script>
 </body>
 </html>

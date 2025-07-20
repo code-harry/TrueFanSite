@@ -9,3 +9,12 @@
     color: gray;
   }
 
+.story-card {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .story-card:hover {
+            background-color: #f0f0f0;
+        }

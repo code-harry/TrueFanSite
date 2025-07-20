@@ -9,7 +9,7 @@ document.getElementById('searchForm').addEventListener('submit', async (e) => {
     const media = document.getElementById('media').value;
     const age = document.getElementById('age').value;
     const query = new URLSearchParams();
-    if(title===null && language===null && genre===null && media===null && age===null)
+    if (!title && !language && !genre && !media && !age)
         {
             alert("Please enter at least one search criteria.");
             return;
@@ -55,7 +55,7 @@ query.append("age", age);
             alert("No stories found matching your criteria.");
             return;
         }
-
+        alert(`${stories.length} stories found matching your criteria.`);
     const results = document.getElementById('results');
     results.innerHTML = "";
     stories.forEach(story => {
