@@ -46,7 +46,12 @@
     <scope>runtime</scope> <!-- or optional depending on setup -->
     <optional>true</optional> <!-- Excludes from production builds -->
 </dependency>
-
+<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+<dependency>
+    <groupId>com.fasterxml.jackson.dataformat</groupId>
+    <artifactId>jackson-dataformat-xml</artifactId>
+    <version>2.19.2</version>
+</dependency>
 
 
 		<dependency>
@@ -54,6 +59,50 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.example</groupId>
+			<artifactId>checkingforcustommavenrepository</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
+<!--<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-boot-starter</artifactId>
+    <version>3.0.0</version>
+</dependency>-->
+		
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-ui -->
+<!--<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-ui</artifactId>
+    <version>1.8.0</version>
+</dependency>-->
+
+<!-- For Spring Boot 3 -->
+<dependency>
+    <groupId>org.springdoc</groupId>
+    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+    <version>2.1.0</version>
+</dependency>
+
+
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-security</artifactId>
+    <version>3.5.3</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter -->
+<dependency>
+    <groupId>com.github.ulisesbocchio</groupId>
+    <artifactId>jasypt-spring-boot-starter</artifactId>
+    <version>3.0.5</version>
+</dependency>
+
+
+		
 	</dependencies>
 
 	<build>
@@ -62,6 +111,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+			 <groupId>com.github.ulisesbocchio</groupId>
+      <artifactId>jasypt-maven-plugin</artifactId>
+      <version>3.0.0</version>
+      </plugin>
 		</plugins>
 	</build>
 	<repositories>

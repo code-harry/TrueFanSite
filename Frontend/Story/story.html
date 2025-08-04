@@ -3,32 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Story Details</title>
+    <link rel="stylesheet" href="Story.css">
+    <script src="./Story.js" defer></script>
 </head>
 <body>
-    <h1 id="storyTitle"></h1>
-    <p id="storyContent"></p>
-    <p><strong>Media:</strong> <span id="storyMedia"></span></p>
-    <p><strong>Language:</strong> <span id="storyLanguage"></span></p>
-    <p><strong>Genre:</strong> <span id="storyGenre"></span></p>
-    <p><strong>Age Group:</strong> <span id="storyAge"></span></p>
+    <div id="messages" style="color: red; font-weight: bold;"></div> <div id="storyContentDisplay"> <h1 id="storyTitle">Name:</h1>
+        <p id="storyContent">Content:</p>
 
-    <script>
-        async function loadStory() {
-            const params = new URLSearchParams(window.location.search);
-            const title = params.get("title");
-
-            const response = await fetch(`http://localhost:8080/api/story?title=${encodeURIComponent(title)}`);
-            const story = await response.json();
-
-            document.getElementById('storyTitle').innerText = story.title;
-            document.getElementById('storyContent').innerText = story.content;
-            document.getElementById('storyMedia').innerText = story.media;
-            document.getElementById('storyLanguage').innerText = story.language;
-            document.getElementById('storyGenre').innerText = story.genre;
-            document.getElementById('storyAge').innerText = story.age;
-        }
-
-        loadStory();
-    </script>
+        <p><strong>Media:</strong> <span id="storyMedia"></span></p>
+        <p><strong>Language:</strong> <span id="storyLanguage"></span></p>
+        <p><strong>Genre:</strong> <span id="storyGenre"></span></p>
+        <p><strong>Age Group:</strong> <span id="storyAge"></span></p>
+    </div>
 </body>
 </html>

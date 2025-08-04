@@ -1,0 +1,38 @@
+/* Styling for individual story cards in search results and feed */
+.story-card {
+    border: 1px solid #ccc; /* A light grey border */
+    border-radius: 8px;      /* Slightly rounded corners */
+    padding: 15px;           /* Inner spacing */
+    margin-bottom: 15px;     /* Space between cards */
+    background-color: #f9f9f9; /* A light background color */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+
+    /* Make it clear it's clickable */
+    cursor: pointer;         /* Changes cursor to a pointer hand on hover */
+    transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+}
+
+/* Hover effect */
+.story-card:hover {
+    background-color: #e0e0e0; /* Darker background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More prominent shadow on hover */
+    transform: translateY(-2px); /* Slightly lift the card on hover */
+}
+
+/* Optional: Style for the headings and paragraphs within the card */
+.story-card h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+.story-card p {
+    color: #666;
+    margin-bottom: 5px;
+    line-height: 1.5;
+}
+
+.story-card strong {
+    color: #555;
+}

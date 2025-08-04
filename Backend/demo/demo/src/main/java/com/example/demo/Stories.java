@@ -91,5 +91,10 @@ public class Stories {
 	{
 		this.age = age;
 	}
+	
+	public String toString()
+	{
+		return getMedia() + getLanguage() + getGenre() + getAge() + getTitle() + getContent() ;
+	}
 }
 
