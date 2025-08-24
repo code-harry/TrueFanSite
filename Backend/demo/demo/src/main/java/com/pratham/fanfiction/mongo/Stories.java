@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.pratham.fanfiction.mongo;
 
 
 import org.springframework.data.annotation.Id;

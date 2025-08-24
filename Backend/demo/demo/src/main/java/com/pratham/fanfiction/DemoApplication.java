@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.pratham.fanfiction;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

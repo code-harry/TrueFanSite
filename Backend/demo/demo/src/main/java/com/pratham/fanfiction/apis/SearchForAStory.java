@@ -1,4 +1,4 @@
-package com.example.demo.apis;
+package com.pratham.fanfiction.apis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Stories;
-import com.example.demo.StoryRepository;
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
 
 
 

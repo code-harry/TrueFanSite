@@ -1,4 +1,4 @@
-package com.example.demo.apis;
+package com.pratham.fanfiction.apis;
 
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.Stories;
-import com.example.demo.StoryRepository;
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -34,6 +34,7 @@ public class PostAStory
 	
 	public boolean storyNameAlreadyPresent(String t)
 	{
+		logger.info("Posting a story has been called");
 		if(repo.findById(t).isPresent())
 		{
 			return true;
@@ -67,19 +68,45 @@ public class PostAStory
 //                .body("Story saved successfully.");
 //	}
 	
+//	@PostMapping("/api/stories")
+//	public String postAStory(@RequestBody  Stories s)
+//	{
+//		logger.info("An Api to post the story has been called.");
+//		
+//		if(storyNameAlreadyPresent(s.getTitle())==true)
+//		{
+//			return "This name cannot be used for a story";
+//		}
+//		
+//		repo.save(s);
+//		return "Ok";
+//	}
+	
+	
 	@PostMapping("/api/stories")
-	public String postAStory(@RequestBody  Stories s)
+	public ResponseEntity<String> postAStory(RequestEntity<Stories> requestEntity) 
 	{
-		logger.info("An Api to post the story has been called.");
-		
-		if(storyNameAlreadyPresent(s.getTitle())==true)
-		{
-			return "This name cannot be used for a story";
-		}
-		
-		repo.save(s);
-		return "Ok";
+	    logger.info("An API to post the story has been called.");
+
+	    Stories s = requestEntity.getBody();
+
+	    if (s == null) 
+	    {
+	        return ResponseEntity.badRequest().body("Request body is missing or invalid");
+	    }
+
+	    if (storyNameAlreadyPresent(s.getTitle())) 
+	    {
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body("This name cannot be used for a story");
+	    }
+
+	    repo.save(s);
+	    return ResponseEntity.status(HttpStatus.CREATED).body("Ok");
 	}
+	
+	
+	
+	
 	
 	
 //	@RequestMapping(path="/api/stories", method = RequestMethod.POST)

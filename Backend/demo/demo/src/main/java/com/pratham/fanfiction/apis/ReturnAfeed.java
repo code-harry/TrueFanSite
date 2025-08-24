@@ -1,4 +1,4 @@
-package com.example.demo.apis;
+package com.pratham.fanfiction.apis;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
+
 import org.springframework.data.domain.Pageable;
-import com.example.demo.Stories;
-import com.example.demo.StoryRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,7 +31,9 @@ public class ReturnAfeed
 	@GetMapping("/api/stories")
 	public List<Stories> getStories(
 	    @RequestParam(defaultValue = "0") int page,
-	    @RequestParam(defaultValue = "10") int size) {
+	    @RequestParam(defaultValue = "10") int size) 
+	{
+		logger.info("Feed API was called");
 	    
 	    Pageable pageable = PageRequest.of(page, size);
 	    Page<Stories> storyPage = repo.findAll(pageable);

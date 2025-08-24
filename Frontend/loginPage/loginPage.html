@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="loginPage.js"></script>
+   
     <link rel="stylesheet" href="loginPage.css">
 </head>
 <body>
-    <form method="post" action="/login">
-  <input name="username" placeholder="Username">
-  <input name="password" type="password" placeholder="Password">
+   <form id="loginForm">
+  <input id="username" name="username" placeholder="Username" required>
+  <input id="password" name="password" type="password" placeholder="Password" required>
   <button type="submit">Login</button>
 </form>
 
+<form>
+  <button id="Home" type="button">Home</button>
+</form>
 
-    <form>
-        <button id="Home" type="button">Home</button>
-    </form>
+<script src="loginPage.js" defer></script>
+
 </body>
 </html>
