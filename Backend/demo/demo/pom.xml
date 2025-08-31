@@ -163,6 +163,66 @@
       <artifactId>jasypt-maven-plugin</artifactId>
       <version>3.0.0</version>
       </plugin>
+      
+      <!-- Used to convert JSON to Java classes and reverse as well-->
+   <!-- <plugin>
+      <groupId>org.openapitools</groupId>
+      <artifactId>openapi-generator-maven-plugin</artifactId>
+      <version>7.9.0</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>generate</goal>
+          </goals>
+          <configuration>
+           
+            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+
+            
+            <generatorName>spring</generatorName>
+
+            
+            <output>${project.build.directory}/generated-sources/openapi</output>
+
+           
+            <configOptions>
+              <interfaceOnly>true</interfaceOnly>
+              <dateLibrary>java8</dateLibrary>
+            </configOptions>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>-->
+    
+    
+    <!-- Used to convert XML to Java classes and the reverse as well-->
+			 <plugin>
+            <groupId>org.jvnet.jaxb2.maven2</groupId>
+            <artifactId>maven-jaxb2-plugin</artifactId>
+            <version>0.15.3</version>
+
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>generate</goal>
+                    </goals>
+                </execution>
+            </executions>
+
+            <configuration>
+                <!-- Location of your schema -->
+                <schemaDirectory>src/main/resources/xsd</schemaDirectory>
+                <schemaIncludes>
+                    <include>*.xsd</include>
+                </schemaIncludes>
+                <!-- Where generated classes will go -->
+                <generateDirectory>target/generated-sources/jaxb</generateDirectory>
+                <packageName>com.example.generated</packageName>
+            </configuration>
+        </plugin>
+      
+      
+      
 		</plugins>
 	</build>
 	<repositories>

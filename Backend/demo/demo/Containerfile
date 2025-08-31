@@ -1,0 +1,15 @@
+# Step 1: Use a lightweight JDK image for running Spring Boot
+FROM eclipse-temurin:17-jdk-alpine
+
+# Step 2: Set a working directory inside the container
+WORKDIR /app
+
+# Step 3: Copy the built JAR file into the container
+# Replace with your actual jar name
+COPY target/fanfiction-0.0.1-SNAPSHOT.jar app.jar
+
+# Step 4: Expose the port your Spring Boot app runs on (default: 8080)
+EXPOSE 8080
+
+# Step 5: Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]

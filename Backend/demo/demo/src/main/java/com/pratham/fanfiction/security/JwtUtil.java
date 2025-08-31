@@ -19,12 +19,18 @@ import java.util.Map;
 public class JwtUtil 
 {
  private final Key key = Keys.hmacShaKeyFor("replace-this-with-a-very-long-secret-key-of-at-least-256-bits".getBytes());// Consider it an encryption key
+ 
+ 
+ 
  private final long expirationMs = 15 * 60 * 1000*1000; // 15 minutes; Time for which the key is valid
 
+ 
+ 
+ // Used to generate a JWT Token
  public String generateToken(String username, int tokenVersion) 
  {
      Date now = new Date(); // Getting the details of the current time
-     Date exp = new Date(now.getTime() + expirationMs);
+     Date exp = new Date(now.getTime() + expirationMs);// The time at which the token will expire
 
 //     return Jwts.builder()
 //             .setSubject(username)
@@ -45,6 +51,8 @@ public class JwtUtil
      
  }
 
+ 
+ //Used to validate a JWT Token
  public boolean validateToken(String token) 
  {
      try 
@@ -58,6 +66,7 @@ public class JwtUtil
      }
  }
 
+ // If the claim is valid, this retrieves all the data stored inside
  public Claims getClaims(String token) 
  {
      return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
@@ -65,6 +74,10 @@ public class JwtUtil
      // This function returns all the claims from the token if it is valid.
  }
  
+ 
+ 
+ 
+ // This is used to encode the passwords
  @Bean
  public PasswordEncoder passwordEncoder() 
  {
