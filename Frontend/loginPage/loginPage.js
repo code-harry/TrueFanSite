@@ -1,3 +1,13 @@
+// No authentication is needed for this page as it is accessible to all users
+
+
+
+
+
+
+
+
+
 document.getElementById("loginForm").addEventListener("submit", async function (event) 
 {
     event.preventDefault(); // stop normal form submission
@@ -5,11 +15,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value;
 
-    try {
+    try 
+    {
         const response = await fetch("http://localhost:8080/auth/login", 
             {
             method: "POST",
-            headers: {
+            headers: 
+            {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ username, password })
@@ -30,7 +42,8 @@ document.getElementById("loginForm").addEventListener("submit", async function (
 
         alert("Login successful!");
         window.location.href = "../feed/feed.html"; // redirect after login
-    } catch (error) {
+    } catch (error) 
+    {
         console.error("Error:", error);
         alert("Something went wrong. Please try again.");
     }

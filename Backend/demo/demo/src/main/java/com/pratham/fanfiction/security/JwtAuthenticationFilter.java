@@ -18,11 +18,21 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.IOException;
 
 @Component
-public class JwtAuthenticationFilter extends OncePerRequestFilter 
+public class JwtAuthenticationFilter extends OncePerRequestFilter // which ensures this filter runs this once per request
 {
 
-    @Autowired JwtUtil jwtUtil;
-    @Autowired AppUserRepository repo;
+	
+	
+	// Used to generate and validate a JWT token
+    @Autowired 
+    JwtUtil jwtUtil;
+    
+    
+    
+    
+    // Used to get data from mongodb
+    @Autowired 
+    AppUserRepository repo;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -33,7 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
         if (header != null && header.startsWith("Bearer ")) 
         {
             String token = header.substring(7);
-            if (jwtUtil.validateToken(token)) {
+            if (jwtUtil.validateToken(token)) 
+            {
                 Claims claims = jwtUtil.getClaims(token);
                 String username = claims.getSubject();
                 int tokenVersionInToken = claims.get("tv", Integer.class);
@@ -42,7 +53,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
                 if (user != null && user.getTokenVersion() == tokenVersionInToken) 
                 {
                     // build authentication and set context
-                    UserDetails ud = User.withUsername(username).password(user.getPasswordHash()).authorities("USER").build();
+//                    UserDetails ud = User.withUsername(username).password(user.getPasswordHash()).authorities("USER").build();
+                	// Get the role directly from the user object fetched from the database
+                	UserDetails ud = User.withUsername(username)
+                	                     .password(user.getPasswordHash())
+                	                     .authorities(user.getRole()) // <-- THE FIX
+                	                     .build();
                     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(ud, null, ud.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(auth);
                 }

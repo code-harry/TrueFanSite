@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginForm.addEventListener("submit", (e) => 
         {
         e.preventDefault();
-        window.location.href = "../login/login.html";
+        window.location.href = "../loginPage/loginPage.html";
     });
 
 });

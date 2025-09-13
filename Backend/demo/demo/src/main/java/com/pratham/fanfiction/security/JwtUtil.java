@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
-@Configuration
 public class JwtUtil 
 {
  private final Key key = Keys.hmacShaKeyFor("replace-this-with-a-very-long-secret-key-of-at-least-256-bits".getBytes());// Consider it an encryption key
@@ -77,10 +76,5 @@ public class JwtUtil
  
  
  
- // This is used to encode the passwords
- @Bean
- public PasswordEncoder passwordEncoder() 
- {
-     return new BCryptPasswordEncoder();
- }
+
 }

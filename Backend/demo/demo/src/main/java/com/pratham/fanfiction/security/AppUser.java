@@ -1,6 +1,6 @@
 package com.pratham.fanfiction.security;
 
-import org.jspecify.annotations.Nullable;
+//import org.jspecify.annotations.Nullable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,7 +16,7 @@ public class AppUser
     
     private String passwordHash;// Will contain the hashed password
     
-    
+    private String role; // e.g., "USER", "ADMIN"
     
     private int tokenVersion = 0; // for token invalidation by incrementing
     // add roles if needed
@@ -26,7 +26,14 @@ public class AppUser
 		return this.passwordHash;
 	}
 	
-	
+	 public String getRole() {
+	        return role;
+	    }
+
+	 public void setRole(String r)
+	 {
+		 this.role = r;
+	 }
 	
 	
 	public String getUsername() 
@@ -49,7 +56,7 @@ public class AppUser
 	
 	
 	
-	public void setPasswordHash(@Nullable String encode) 
+	public void setPasswordHash( String encode) 
 	{
 		// setting the password hash
 		this.passwordHash = encode;

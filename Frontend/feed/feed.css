@@ -1,20 +1,106 @@
-  .story {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-  }
-  #loading {
+/* Consistent color palette with the submission form */
+:root {
+    --primary-color: #6a5acd; /* Slate Blue */
+    --secondary-color: #f0e6ff; /* Light Lavender */
+    --background-color: #f9f9fd;
+    --text-color: #333;
+    --subtle-text-color: #666;
+    --border-color: #e0e0e0;
+    --white-color: #ffffff;
+    --shadow-color: rgba(106, 90, 205, 0.15);
+}
+
+body {
+    font-family: 'Mulish', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+h1 {
+    font-family: 'Lora', serif;
+    color: var(--primary-color);
     text-align: center;
-    padding: 10px;
-    color: gray;
-  }
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+}
+
+#storyFeed {
+    display: grid;
+    gap: 1.5rem;
+}
 
 .story-card {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px;
-            cursor: pointer;
-        }
-        .story-card:hover {
-            background-color: #f0f0f0;
-        }
+    background-color: var(--white-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+.story-card h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.story-card .meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--subtle-text-color);
+}
+
+.story-card .meta-info p {
+    margin: 0;
+}
+
+.story-card strong {
+    color: var(--text-color);
+    font-weight: 700;
+}
+
+
+/* Loading Spinner and End of Feed Message */
+#loading, #endOfFeed {
+    text-align: center;
+    padding: 2rem;
+    color: var(--subtle-text-color);
+}
+
+.spinner {
+    border: 4px solid var(--secondary-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none;
+}

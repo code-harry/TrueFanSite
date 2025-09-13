@@ -17,6 +17,8 @@ import ch.qos.logback.classic.Logger;
 
 //import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
+
+// This defines APIS for login, signup, and logout
 @RestController
 @RequestMapping("/auth")
 public class AuthController 
@@ -41,6 +43,8 @@ public class AuthController
     //Used to do logging
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(AuthController.class);
     
+    
+    //API for signing up
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String,String> body) 
     {
@@ -71,6 +75,8 @@ public class AuthController
         
         //Setting the token number as 0
         u.setTokenVersion(0);
+        
+        u.setRole("USER");
         
         //Saving the user into the database.
         repo.save(u);

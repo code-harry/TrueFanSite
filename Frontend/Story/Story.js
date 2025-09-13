@@ -1,6 +1,91 @@
-async function loadStory() {
+
+//Authentication logic starts here
+function getJwtPayload(token) 
+{
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join('')
+    );
+    return JSON.parse(jsonPayload);
+  } 
+  catch (e) 
+  {
+    console.error("Invalid token format", e);
+    return null;
+  }
+}
+
+// Function to check if a token is expired
+function isTokenExpired(token) 
+{
+  // Getting the payload- which is the second part of the JWT token
+  const payload = getJwtPayload(token);
+
+  // If the payload is null or doesn't have an exp field, consider the token expired
+  if (!payload || !payload.exp)
+    {
+      return true;
+    }  
+
+    // If the payload is less than the curent time, the token is expired otherwise the token is valid
+  return payload.exp < (Date.now() / 1000);
+
+}
+
+// The first code that gets executed when the page is loaded
+window.addEventListener('load', () => 
+  {
+    // getting the jwt token from local storage and storing it in the variable called token
+  const token = localStorage.getItem('jwtToken');
+
+  // If the token is not present, alert the user and redirect to login page
+  if(!token) 
+    {
+    alert("You need to log in first.");
+    window.location.href = '../loginPage/loginPage.html'; // redirect to login if no token
+    return;
+  }
+
+  // If the token is present, check if it is expired
+  if (token && isTokenExpired(token)) 
+    {
+    localStorage.removeItem('jwtToken');
+    alert("Session expired. Please log in again.");
+    // Redirect to login page if token is expired
+    window.location.href = '../loginPage/loginPage.html';
+  }
+});
+
+
+
+// Authentication logic ends here
+
+
+//function that will call the api to load the story
+async function loadStory() 
+{
+    //getting the query parameters from the url
     const params = new URLSearchParams(window.location.search);
+    // If no query parameters, exit the function
+if(!params)
+{
+    return;
+}
+
+
+
+    //getting the query parameter with the key title
     const title = params.get("title");
+
+    // If no title is provided, exit the function
+    if(!title)
+    {
+        return
+    }
     const messagesDiv = document.getElementById('messages'); // Get the messages div
     const storyDisplayDiv = document.getElementById('storyContentDisplay'); // Get the story display div
 

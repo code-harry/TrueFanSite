@@ -14,16 +14,25 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 public class CustomUserDetailsService implements UserDetailsService 
 {
 
+	
+	
+	//Represents your mongoDb interface which helps to fetch users
     @Autowired
     private AppUserRepository repo;
 
+    
+    
+    
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
     {
         AppUser user = repo.findById(username).orElseThrow(() -> new UsernameNotFoundException("No user"));
+        
+        
+        //Returns a username fetched by the database
         return User.withUsername(user.getUsername())
                    .password(user.getPasswordHash())
-                   .authorities("USER")
+                   .authorities(user.getRole())
                    .build();
     }
 }
