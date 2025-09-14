@@ -63,8 +63,31 @@ window.addEventListener('load', () =>
     // Redirect to login page if token is expired
     window.location.href = '../loginPage/loginPage.html';
   }
-});
 
+displayUsernameOnPage();
+
+
+
+
+});
+function displayUsernameOnPage() 
+{
+    const token = localStorage.getItem('jwtToken');
+    if (!token) return;
+
+    try 
+    {
+        const payload = getJwtPayload(token);
+        const username = payload.sub;
+
+        const displayElement = document.getElementById('usernameDisplay');
+        if (displayElement && username) {
+            displayElement.textContent = `Hi, ${username}`;
+        }
+    } catch (e) {
+        console.error("Could not display username:", e);
+    }
+}
 
 // Authentication logic ends here 
 
@@ -143,3 +166,10 @@ window.addEventListener('load', () =>
         });
 
 
+let logoutButton = document.getElementById("logoutButton");
+logoutButton.addEventListener("click", function () 
+  { 
+  localStorage.removeItem("jwtToken"); // Remove the token from local storage
+  alert("You have been logged out.");
+  window.location.href = "../Guest/Guest.html"; // Redirect to login page
+});

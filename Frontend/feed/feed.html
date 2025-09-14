@@ -4,25 +4,43 @@
     <meta charset="UTF-8">
     <title>Story Feed</title>
     
-
-   <!-- Link to the javascript file-->
-<script src="Feed.js" defer></script>
-<!-- defer keyword is being used so that script is downloaded in paralled to the html parsing but not -->
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
-
-
-
-<!-- Link to the CSS file-->
+    <!-- Link to the javascript file-->
+    <script src="Feed.js" defer></script>
+    
+    <!-- Link to the CSS files-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Mulish:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Feed.css">
 
 </head>
 <body>
-    <h1>Story Feed</h1>
-    <div id="storyFeed"></div>
 
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <button id="homeButton" class="nav-btn">Home</button>
+        <div class="user-display">
+            <span id="usernameDisplay" class="username"></span>
+            <button id="logoutButton" class="nav-btn">Logout</button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <h1>Story Feed</h1>
+        <div id="storyFeed"></div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="hidden">
+            <div class="spinner"></div>
+        </div>
+
+        <!-- End of Feed Message -->
+        <div id="endOfFeed" class="hidden">
+            <p>You've reached the end of the stories!</p>
+        </div>
+    </div>
 
 </body>
 </html>
+

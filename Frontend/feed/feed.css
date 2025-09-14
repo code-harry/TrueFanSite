@@ -19,16 +19,68 @@ body {
     box-sizing: border-box;
 }
 
+/* --- Top Navigation Bar --- */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--white-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.user-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.username {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.nav-btn {
+    font-family: 'Mulish', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--white-color);
+    transform: translateY(-2px);
+}
+
+/* --- End Navigation Bar Styles --- */
+
+
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 1rem;
+    /* Increased top padding to add more space below the fixed nav bar */
+    padding-top: 110px; 
 }
 
 h1 {
     font-family: 'Lora', serif;
     color: var(--primary-color);
     text-align: center;
+    margin-top: 90px; /* Added margin to push title down */
     margin-bottom: 2.5rem;
     font-size: 2.5rem;
 }
@@ -104,3 +156,4 @@ h1 {
 .hidden {
     display: none;
 }
+

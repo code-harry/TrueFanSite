@@ -32,6 +32,9 @@ public class SecurityConfig
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // ✅ allow preflight
                 .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // --- THIS IS THE CRITICAL TEST LINE ---
+                .requestMatchers("/api/search").permitAll() 
+                
                 .anyRequest().authenticated()
                 // Every other request other than 
             )

@@ -1,5 +1,5 @@
-
 //Authentication logic starts here
+//This function decodes the JWT token and returns the payload as a JavaScript object
 function getJwtPayload(token) 
 {
   try {
@@ -58,9 +58,35 @@ window.addEventListener('load', () =>
     // Redirect to login page if token is expired
     window.location.href = '../loginPage/loginPage.html';
   }
+
+  const username = displayUsernameOnPage();
+  if (username) 
+    {
+      const displayElement = document.getElementById('usernameDisplay');
+      displayElement.textContent = `Hi, ${username}`;
+    }
 });
 
+function displayUsernameOnPage() 
+{
+    const token = localStorage.getItem('jwtToken');
+    if (!token) return;
 
+    try 
+    {
+        const payload = getJwtPayload(token);
+        const username = payload.sub;
+
+        // const displayElement = document.getElementById('usernameDisplay');
+        if (username) 
+          {
+            // displayElement.textContent = `Hi, ${username}`;
+            return username;
+        }
+    } catch (e) {
+        console.error("Could not display username:", e);
+    }
+}
 
 // Authentication logic ends here
 
@@ -68,8 +94,32 @@ window.addEventListener('load', () =>
 //function that will call the api to load the story
 async function loadStory() 
 {
+
+
+
+ const token = localStorage.getItem('jwtToken');
+
+    // 2. Validate the token. If it's missing or expired, block the request.
+    if (!token) 
+      {
+        messagesDiv.innerHTML = '<p>You must be logged in to view a story. Redirecting to login...</p>';
+        // Redirect to login after a short delay
+        setTimeout(() => { window.location.href = '../loginPage/loginPage.html'; }, 2000);
+        return;
+    }
+
+    if (isTokenExpired(token)) 
+      {
+        localStorage.removeItem('jwtToken');
+        messagesDiv.innerHTML = '<p>Your session has expired. Please log in again. Redirecting...</p>';
+        setTimeout(() => { window.location.href = '../loginPage/loginPage.html'; }, 2000);
+        return;
+    }
+
+
     //getting the query parameters from the url
     const params = new URLSearchParams(window.location.search);
+
     // If no query parameters, exit the function
 if(!params)
 {
@@ -94,26 +144,38 @@ if(!params)
     storyDisplayDiv.style.display = 'none'; // Hide story content by default
 
     // 1. Basic validation for the title on the client-side
-    if (!title || title.trim() === '') {
+    if (!title || title.trim() === '') 
+      {
         messagesDiv.innerHTML = '<p>Please provide a story title in the URL (e.g., ?title=YourStoryTitle).</p>';
         return;
     }
 
     // 2. Make the API call
-    const response = await fetch(`http://localhost:8080/api/story?title=${encodeURIComponent(title)}`);
+     const response = await fetch(`http://localhost:8080/api/story?title=${encodeURIComponent(title)}`, 
+     {
+        method: 'GET',
+        headers: 
+        {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // ✅ The token is now included!
+        }
+    });
 
     // 3. Handle different HTTP status codes from the API
-    if (response.status === 404) {
+    if (response.status === 404) 
+      {
         messagesDiv.innerHTML = '<p>The story you are looking for was not found.</p>';
         return;
     }
 
-    if (response.status === 400) {
+    if (response.status === 400) 
+      {
         messagesDiv.innerHTML = '<p>Invalid request. Please ensure the title parameter is correct.</p>';
         return;
     }
 
-    if (!response.ok) {
+    if (!response.ok) 
+      {
         messagesDiv.innerHTML = `<p>Error loading story: ${response.status} ${response.statusText}</p>`;
         return;
     }
@@ -136,3 +198,18 @@ if(!params)
 }
 
 loadStory();
+
+let homeButton = document.getElementById('homeButton');
+homeButton.addEventListener('click', () => 
+  {
+    window.location.href = '../Home/home.html';
+  });
+
+  let logoutButton = document.getElementById('logoutButton');
+logoutButton.addEventListener('click', () => 
+  {
+    // Remove the token from local storage  
+  localStorage.removeItem('jwtToken');
+    // Redirect to login page
+  window.location.href = '../Guest/Guest.html'; 
+  });
