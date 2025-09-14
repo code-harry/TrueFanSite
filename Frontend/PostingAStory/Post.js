@@ -113,6 +113,7 @@ function displayUsernameOnPage()
             const storyLanguage = document.getElementById('language').value;
             const storyGenre = document.getElementById('genre').value;
             const storyAge = document.getElementById('age').value;
+            const storySummary = document.getElementById('summary').value;
             // alert("Story Name: " + storyLanguage + "\n" );
             try {
                 const response = await fetch('http://localhost:8080/api/stories', {
@@ -127,7 +128,8 @@ function displayUsernameOnPage()
                         media: storyMedia,
                         language: storyLanguage,
                         genre: storyGenre,
-                        age: storyAge
+                        age: storyAge,
+                        summary: storySummary
                     })
                 });
 
@@ -172,4 +174,10 @@ logoutButton.addEventListener("click", function ()
   localStorage.removeItem("jwtToken"); // Remove the token from local storage
   alert("You have been logged out.");
   window.location.href = "../Guest/Guest.html"; // Redirect to login page
+});
+
+let homeButton = document.getElementById("homeButton");
+homeButton.addEventListener("click", function () 
+  { 
+  window.location.href = "../Home/home.html"; // Redirect to home page
 });

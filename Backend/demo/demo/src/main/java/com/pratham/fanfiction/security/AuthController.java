@@ -2,6 +2,7 @@ package com.pratham.fanfiction.security;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,20 @@ public class AuthController
     public ResponseEntity<?> signup(@RequestBody Map<String,String> body) 
     {
     	logger.info("Signup API is called");
+    	
     	//getting the username from the body
         String username = body.get("username");
+
+        Optional<AppUser>listOfUsername = repo.findByUsername(username);
+        
+        if(listOfUsername.isPresent())
+        {
+        	 return ResponseEntity.status(HttpStatus.CONFLICT)
+                     .body(Map.of(
+                         "message", "This username cannot be used"
+                     ));
+        }
+        
         
         //getting the password from the body
         String password = body.get("password");

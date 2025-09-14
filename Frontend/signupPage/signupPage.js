@@ -36,12 +36,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("jwtToken", data.token);
                 window.location.href = "../feed/feed.html"; // redirect to feed page after signup
             } 
+            else if(response.status === 409)
+            {
+                alert("Username already exists. Please choose a different one.");
+            }
             else 
                 {
                 const errorData = await response.json();
                 alert(`Signup failed: ${errorData.message || "Unknown error"}`);
             }
-        } catch (error) 
+        } 
+        catch (error) 
         {
             console.error("Error during signup:", error);
             alert("An error occurred. Please try again.");
