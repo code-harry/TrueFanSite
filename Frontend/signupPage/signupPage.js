@@ -2,9 +2,26 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const signupForm = document.querySelector("form");
-    const homeForm = document.getElementById("homeForm");
-    const loginForm = document.getElementById("login");
+    //Old code
+    // const signupForm = document.querySelector("form");
+
+    //New Code
+    const signupForm = $("form")[0]; // Using jQuery to get the DOM element
+
+    //Old code
+    // const homeForm = document.getElementById("homeForm");
+
+    //New Code
+    const homeForm = $("#homeForm")[0]; // Using jQuery to get the DOM element
+
+    //Old code
+    //const loginForm = document.getElementById("login");
+
+    //New Code
+    const loginForm = $("#login")[0]; // Using jQuery to get the DOM element
+
+
+    
 
     // Handle signup form submission
     signupForm.addEventListener("submit", async (e) => {

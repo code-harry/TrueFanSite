@@ -26,10 +26,27 @@
 
 
 // --- Page Initialization ---
-document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('jwtToken');
-    if (!token || isTokenExpired(token)) 
-      {
+//Old code without JQUERY
+// document.addEventListener('DOMContentLoaded', () => {
+//     const token = localStorage.getItem('jwtToken');
+//     if (!token || isTokenExpired(token)) 
+//       {
+//         localStorage.removeItem('jwtToken');
+//         alert("Session expired or you are not logged in. Please log in again.");
+//         window.location.href = '../loginPage/loginPage.html';
+//         return;
+//     }
+    
+//     displayUsernameOnPage();
+//     setupEventListeners();
+//     loadMoreStories();
+// });
+
+//New code with JQUERY to intialize the page
+$(document).ready(function() {
+    const token = localStorage.getItem('jwtToken');     
+    if (!token || isTokenExpired(token))
+              {
         localStorage.removeItem('jwtToken');
         alert("Session expired or you are not logged in. Please log in again.");
         window.location.href = '../loginPage/loginPage.html';
@@ -39,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     displayUsernameOnPage();
     setupEventListeners();
     loadMoreStories();
-});
+})
 
 
 // --- Global Variables ---
@@ -58,13 +75,26 @@ function setupEventListeners() {
         });
     }
 
-    const logoutButton = document.getElementById('logoutButton');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', handleLogout);
-    }
+    //Old code to add event listener to logout button
+    // const logoutButton = document.getElementById('logoutButton');
+    // if (logoutButton) 
+    //     {
+    //     logoutButton.addEventListener('click', handleLogout);
+    // }
 
-    window.addEventListener('scroll', () => {
-        const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    $('logoutButton').on('click', handleLogout);
+
+    //Old code to add event listener to scroll event
+    // window.addEventListener('scroll', () => {
+    //     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    //     if (clientHeight + scrollTop >= scrollHeight - 100) {
+    //         loadMoreStories();
+    //     }
+    // });
+
+
+    $(window).on('scroll', function() {
+         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
         if (clientHeight + scrollTop >= scrollHeight - 100) {
             loadMoreStories();
         }
@@ -73,20 +103,33 @@ function setupEventListeners() {
 
 
 // --- Main Functions ---
-
+//Function to display username on the page
 function displayUsernameOnPage() {
     const token = localStorage.getItem('jwtToken');
-    if (!token) return;
+    if (!token)
+        {
+            return;
+        }
 
-    try {
+    try
+     {
         const payload = getJwtPayload(token);
         const username = payload.sub;
 
-        const displayElement = document.getElementById('usernameDisplay');
-        if (displayElement && username) {
+
+        //Old code without JQUERY
+        // const displayElement = document.getElementById('usernameDisplay');
+
+        //New code with JQUERY
+        const displayElement = $('#usernameDisplay');
+
+        if (displayElement && username) 
+            {
             displayElement.textContent = `Hi, ${username}`;
         }
-    } catch (e) {
+    } 
+    catch (e) 
+    {
         console.error("Could not display username:", e);
     }
 }
@@ -124,7 +167,13 @@ async function loadMoreStories() {
     if (loading || allLoaded) return;
 
     loading = true;
-    document.getElementById('loading').classList.remove('hidden');
+
+    //Old code without JQUERY
+    // document.getElementById('loading').classList.remove('hidden');
+
+
+    //New code with JQUERY
+    $('#loading').removeClass('hidden');
 
     try {
         const stories = await fetchStories(currentPage, pageSize);
@@ -173,8 +222,12 @@ async function fetchStories(page, size) {
     }
 }
 
-function appendStories(stories) {
-    const feed = document.getElementById('storyFeed');
+function appendStories(stories) 
+{
+    // const feed = document.getElementById('storyFeed');
+
+    const feed= $('#storyFeed')[0]; // Using jQuery to get the DOM element
+
     stories.forEach(story => {
         const div = document.createElement('div');
         div.className = 'story-card';

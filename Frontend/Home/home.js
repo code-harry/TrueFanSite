@@ -38,8 +38,34 @@ function isTokenExpired(token)
 
 }
 
+//Old Code
  // The first code that gets executed when the page is loaded
-window.addEventListener('load', () => 
+// window.addEventListener('load', () => 
+//   {
+//     // getting the jwt token from local storage and storing it in the variable called token
+//   const token = localStorage.getItem('jwtToken');
+
+//   //If the token is not present, alert the user and redirect to login page
+//   if(!token) 
+//     {
+//     alert("You need to log in first.");
+//     window.location.href = '../loginPage/loginPage.html'; // redirect to login if no token
+//     return;
+//   }
+
+//   // If the token is present, check if it is expired
+//   if (token && isTokenExpired(token)) 
+//     {
+//     localStorage.removeItem('jwtToken');
+//     alert("Session expired. Please log in again.");
+//     // Redirect to login page if token is expired
+//     window.location.href = '../loginPage/loginPage.html';
+//   }
+// });
+
+//New code
+ // The first code that gets executed when the page is loaded
+$(window).on('load', () => 
   {
     // getting the jwt token from local storage and storing it in the variable called token
   const token = localStorage.getItem('jwtToken');
@@ -62,32 +88,66 @@ window.addEventListener('load', () =>
   }
 });
 
-
-
-
 // The actual logic of the page
 
-let a = document.querySelector("#Post");
-a.addEventListener("click",function()
+
+//Old code
+// let a = document.querySelector("#Post");
+// a.addEventListener("click",function()
+// {
+//     window.location.href = "../PostingAStory/post.html";
+// });
+
+
+//New Code
+$('#Post').on("click",function()
 {
-    window.location.href = "../PostingAStory/post.html";
+  window.location.href = "../PostingAStory/post.html";
 });
-let b = document.querySelector("#Read");
-b.addEventListener("click",function()
+
+
+
+
+//Old code
+// let b = document.querySelector("#Read");
+// b.addEventListener("click",function()
+// {
+//     window.location.href = "../Feed/feed.html";
+// });
+
+//New Code
+$('#Read').on("click",function()
 {
     window.location.href = "../Feed/feed.html";
 });
 
-let c = document.querySelector("#search");
-c.addEventListener("click",function()
+
+
+//Old code
+// let c = document.querySelector("#search");
+// c.addEventListener("click",function()
+// {
+//     window.location.href = "../Search/search.html";
+// });
+
+
+$('#search').on("click",function()
 {
-    window.location.href = "../Search/search.html";
+ window.location.href = "../Search/search.html";
 });
 
-let d = document.querySelector("#Logout");
-d.addEventListener("click",function()
+
+
+//Old code
+// let d = document.querySelector("#Logout");
+// d.addEventListener("click",function()
+// {
+//     localStorage.removeItem("jwtToken");
+//     window.location.href = "../Guest/Guest.html";
+// });
+
+$('#Logout').on("click",function()
 {
     localStorage.removeItem("jwtToken");
     window.location.href = "../Guest/Guest.html";
 });
-

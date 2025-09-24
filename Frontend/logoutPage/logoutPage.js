@@ -46,30 +46,56 @@ function isTokenExpired(token)
 
 
 
+//Old Code
+// document.addEventListener('DOMContentLoaded', () => 
+//     {
+//         const token = localStorage.getItem('jwtToken');
+//         if(token==null)
+//         {
+//             alert("You need to log in first.");
+//             window.location.href = '../loginPage/loginPage.html';   
+//             return;
+//         }
 
-document.addEventListener('DOMContentLoaded', () => 
-    {
-        const token = localStorage.getItem('jwtToken');
-        if(token==null)
-        {
-            alert("You need to log in first.");
-            window.location.href = '../loginPage/loginPage.html';   
-            return;
-        }
+//         if(isTokenExpired(token))
+//         {
+//             alert("Session expired. Please log in again.");
+//             localStorage.removeItem('jwtToken');
+//              window.location.href = '../Guest/Guest.html'; // go back to guestPage
+//             return;
+//         }
 
-        if(isTokenExpired(token))
-        {
-            alert("Session expired. Please log in again.");
-            localStorage.removeItem('jwtToken');
-             window.location.href = '../Guest/Guest.html'; // go back to guestPage
-            return;
-        }
+//         if (token) 
+//         {
+//             localStorage.removeItem('jwtToken');
+//             alert('You have been logged out successfully.');
+//             window.location.href = '../Guest/Guest.html'; // go back to guestPage
+//             return;
+//         }
+// });
 
-        if (token) 
-        {
-            localStorage.removeItem('jwtToken');
-            alert('You have been logged out successfully.');
-            window.location.href = '../Guest/Guest.html'; // go back to guestPage
-            return;
-        }
+// New Code
+$(document).ready(function() {
+    const token = localStorage.getItem('jwtToken');
+
+    if (token == null) {
+        alert("You need to log in first.");
+        window.location.href = '../loginPage/loginPage.html';
+        return;
+    }
+
+    if (isTokenExpired(token)) {
+        alert("Session expired. Please log in again.");
+        localStorage.removeItem('jwtToken');
+        window.location.href = '../Guest/Guest.html'; // go back to guestPage
+        return;
+    }
+
+    if (token) {
+        localStorage.removeItem('jwtToken');
+        alert('You have been logged out successfully.');
+        window.location.href = '../Guest/Guest.html'; // go back to guestPage
+        return;
+    }
 });
+

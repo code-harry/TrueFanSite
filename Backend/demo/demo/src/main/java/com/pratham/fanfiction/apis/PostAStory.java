@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pratham.fanfiction.mongo.Stories;
@@ -43,7 +41,7 @@ public class PostAStory
 	}
 	
 	
-	
+	//Old code that for the api
 //	@PostMapping("/api/stories")
 //	public ResponseEntity<String> postAStory(RequestEntity<Stories> req)
 //	{
@@ -94,7 +92,15 @@ public class PostAStory
 	    {
 	        return ResponseEntity.badRequest().body("Request body is missing or invalid");
 	    }
-
+	    
+	    
+	    if(s.getUsername()==null)
+	    {
+	    	return ResponseEntity
+	                .badRequest()
+	                .body("❌ Bad Request: 'username' parameter is required.");
+	    }
+	    
 	    if (storyNameAlreadyPresent(s.getTitle())) 
 	    {
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body("This name cannot be used for a story");

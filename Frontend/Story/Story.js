@@ -37,7 +37,40 @@ function isTokenExpired(token)
 }
 
 // The first code that gets executed when the page is loaded
-window.addEventListener('load', () => 
+//Old code
+// window.addEventListener('load', () => 
+//   {
+//     // getting the jwt token from local storage and storing it in the variable called token
+//   const token = localStorage.getItem('jwtToken');
+
+//   // If the token is not present, alert the user and redirect to login page
+//   if(!token) 
+//     {
+//     alert("You need to log in first.");
+//     window.location.href = '../loginPage/loginPage.html'; // redirect to login if no token
+//     return;
+//   }
+
+//   // If the token is present, check if it is expired
+//   if (token && isTokenExpired(token)) 
+//     {
+//     localStorage.removeItem('jwtToken');
+//     alert("Session expired. Please log in again.");
+//     // Redirect to login page if token is expired
+//     window.location.href = '../loginPage/loginPage.html';
+//   }
+
+//   const username = displayUsernameOnPage();
+//   if (username) 
+//     {
+//       const displayElement = document.getElementById('usernameDisplay');
+//       displayElement.textContent = `Hi, ${username}`;
+//     }
+// });
+
+//New Code
+//If the user is not authenticated, they should not be able to access this page 
+$(window).on("load",() => 
   {
     // getting the jwt token from local storage and storing it in the variable called token
   const token = localStorage.getItem('jwtToken');
@@ -66,6 +99,13 @@ window.addEventListener('load', () =>
       displayElement.textContent = `Hi, ${username}`;
     }
 });
+
+
+
+
+
+
+
 
 function displayUsernameOnPage() 
 {
@@ -189,23 +229,43 @@ if(!params)
     storyDisplayDiv.style.display = 'block';
 
     // Update the HTML elements
-    document.getElementById('storyTitle').innerText = 'Name: ' + story.title; // Add back "Name:"
-    document.getElementById('storyContent').innerText = 'Content: ' + story.content; // Add back "Content:"
-    document.getElementById('storyMedia').innerText = story.media;
-    document.getElementById('storyLanguage').innerText = story.language;
-    document.getElementById('storyGenre').innerText = story.genre;
-    document.getElementById('storyAge').innerText = story.age;
+    //Old code
+    // document.getElementById('storyTitle').innerText = 'Name: ' + story.title; // Add back "Name:"
+    // document.getElementById('storyContent').innerText = 'Content: ' + story.content; // Add back "Content:"
+    // document.getElementById('storyMedia').innerText = story.media;
+    // document.getElementById('storyLanguage').innerText = story.language;
+    // document.getElementById('storyGenre').innerText = story.genre;
+    // document.getElementById('storyAge').innerText = story.age;
+
+
+    //New Code
+    $('#storyTitle').text('Name: ' + story.title); // Using jQuery to set text
+    $('#storyContent').text('Content: ' + story.content); // Using jQuery to set text
+    $('#storyMedia').text(story.media);
+    $('#storyLanguage').text(story.language);
+    $('#storyGenre').text(story.genre);
+    $('#storyAge').text(story.age);
 }
 
 loadStory();
 
-let homeButton = document.getElementById('homeButton');
+//Old Code
+// let homeButton = document.getElementById('homeButton');
+
+//New Code
+let homeButton = $("#homeButton")[0]; // Using jQuery to get the DOM element
 homeButton.addEventListener('click', () => 
   {
     window.location.href = '../Home/home.html';
   });
 
-  let logoutButton = document.getElementById('logoutButton');
+
+  //Old code
+  // let logoutButton = document.getElementById('logoutButton');
+let logoutButton = $("#logoutButton")[0]; // Using jQuery to get the DOM element
+
+
+
 logoutButton.addEventListener('click', () => 
   {
     // Remove the token from local storage  

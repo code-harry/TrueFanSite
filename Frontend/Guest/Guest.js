@@ -68,32 +68,83 @@
 
 // The actual logic of the page
 
-let a = document.querySelector("#Post");
-a.addEventListener("click",function()
-{
+
+//Old code without Jquery
+// let a = document.querySelector("#Post");
+// a.addEventListener("click",function()
+// {
+//     window.location.href = "../PostingAStory/post.html";
+// });
+
+//New code with JQUERY
+$('#Post').on('click', function() {
     window.location.href = "../PostingAStory/post.html";
 });
-let b = document.querySelector("#Read");
-b.addEventListener("click",function()
-{
+
+
+
+
+//Old code without JQUery
+// let b = document.querySelector("#Read");
+// b.addEventListener("click",function()
+// {
+//     window.location.href = "../Feed/feed.html";
+// });
+
+
+//New code with JQUERY
+$('#Read').on('click', function() {
     window.location.href = "../Feed/feed.html";
 });
 
-let c = document.querySelector("#search");
-c.addEventListener("click",function()
-{
+
+//Old code without JQUery
+// let c = document.querySelector("#searchBtn");
+// c.addEventListener("click",function()
+// {
+//     window.location.href = "../Search/search.html";
+// });
+
+
+
+
+//New code with JQUERY
+$("#searchBtn").on('click', function() {
     window.location.href = "../Search/search.html";
 });
 
-let d = document.querySelector("#Login");
-d.addEventListener("click",function()
-{
+
+
+
+
+
+
+//Old code without JQUery
+// let d = document.querySelector("#Login");
+// d.addEventListener("click",function()
+// {
+//     // localStorage.removeItem("jwtToken");
+//     window.location.href = "../loginPage/loginPage.html";
+// });
+
+
+//New code with JQUERY
+$('#Login').on('click', function() {
     // localStorage.removeItem("jwtToken");
     window.location.href = "../loginPage/loginPage.html";
 });
 
-let e = document.querySelector("#Signup");
-e.addEventListener("click",function()
+
+
+//Old code without JQUery
+// let e = document.querySelector("#Signup");
+// e.addEventListener("click",function()
+// {
+//     window.location.href = "../signupPage/signupPage.html";
+// });
+
+//New code with JQUERY
+$('#Signup').on('click',function()
 {
     window.location.href = "../signupPage/signupPage.html";
 });

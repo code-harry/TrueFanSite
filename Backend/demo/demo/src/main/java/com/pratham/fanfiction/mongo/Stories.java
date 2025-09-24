@@ -55,7 +55,7 @@ public class Stories
     {
     	this.username = username;
     }
-    public String getUsername(String username)
+    public String getUsername()
     {
     	return username;
     }

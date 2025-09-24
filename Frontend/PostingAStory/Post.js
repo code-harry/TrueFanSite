@@ -42,7 +42,36 @@ function isTokenExpired(token)
 }
 
 // The first code that gets executed when the page is loaded
-window.addEventListener('load', () => 
+//Old code
+// window.addEventListener('load', () => 
+//   {
+//     // getting the jwt token from local storage and storing it in the variable called token
+//   const token = localStorage.getItem('jwtToken');
+
+//   // If the token is not present, alert the user and redirect to login page
+//   if(!token) 
+//     {
+//     alert("You need to log in first.");
+//     window.location.href = '../loginPage/loginPage.html'; // redirect to login if no token
+//     return;
+//   }
+
+//   // If the token is present, check if it is expired
+//   if (token && isTokenExpired(token)) 
+//     {
+//     localStorage.removeItem('jwtToken');
+//     alert("Session expired. Please log in again.");
+//     // Redirect to login page if token is expired
+//     window.location.href = '../loginPage/loginPage.html';
+//   }
+
+// displayUsernameOnPage();
+
+// });
+
+
+//New Code
+$(window).on('load', () => 
   {
     // getting the jwt token from local storage and storing it in the variable called token
   const token = localStorage.getItem('jwtToken');
@@ -66,25 +95,76 @@ window.addEventListener('load', () =>
 
 displayUsernameOnPage();
 
-
-
-
 });
+
+//Function to get username from token
+function getUsernameFromToken() 
+{
+  //Takes the token from the local storage
+    const token = localStorage.getItem('jwtToken');
+
+    //If token is null then return
+    if (token==null)
+      {
+        return null;
+    } 
+
+    
+    try 
+    {
+      //gets the payload from the token which is the second part of the token
+        const payload = getJwtPayload(token);
+
+        //gets the username which is the sub of your token
+        const username = payload.sub;
+        return username;
+        
+    } 
+    catch (e) 
+    {
+        console.error("Could not display username:", e);
+    }
+
+
+
+
+}
+
+//It adds the username to the page
 function displayUsernameOnPage() 
 {
+  //Getting the token from local storage
     const token = localStorage.getItem('jwtToken');
-    if (!token) return;
+
+    //If token is null then return
+    if (token==null)
+      {
+      return;
+    } 
 
     try 
     {
+      //Getting the payload which is the second part of the token
         const payload = getJwtPayload(token);
+        //Getting the username which is the subject of the payload
         const username = payload.sub;
 
-        const displayElement = document.getElementById('usernameDisplay');
-        if (displayElement && username) {
+
+
+        //Old Code
+        // const displayElement = document.getElementById('usernameDisplay');
+
+        // New Code
+        const displayElement = $("#usernameDisplay");
+
+        //If the username is not null and the display element where the username is to be addedis not null then add the username to the page
+        if (displayElement!=null && username!=null) 
+        {
             displayElement.textContent = `Hi, ${username}`;
         }
-    } catch (e) {
+    } 
+    catch (e)
+    {
         console.error("Could not display username:", e);
     }
 }
@@ -94,14 +174,24 @@ function displayUsernameOnPage()
 
 
 
-   
-       let a =  document.getElementById('storyForm');
+      //Old code
+      //  let a =  document.getElementById('storyForm');
+
+
+
+
+      // New Code
+      let a = $("#storyForm");
+
+
+      
        a.addEventListener('submit', async function(e) 
        {
             e.preventDefault(); // prevent form from refreshing the page
             const token = localStorage.getItem("jwtToken"); // retrieve stored JWT
 
-  if (!token) 
+  //If token is null
+  if (token==null) 
     {
     alert("You need to log in first.");
     window.location.href = "../loginPage/loginPage.html"; // redirect to login if no token
@@ -114,6 +204,7 @@ function displayUsernameOnPage()
             const storyGenre = document.getElementById('genre').value;
             const storyAge = document.getElementById('age').value;
             const storySummary = document.getElementById('summary').value;
+            const StoryUsername = getUsernameFromToken();
             // alert("Story Name: " + storyLanguage + "\n" );
             try {
                 const response = await fetch('http://localhost:8080/api/stories', {
@@ -129,12 +220,14 @@ function displayUsernameOnPage()
                         language: storyLanguage,
                         genre: storyGenre,
                         age: storyAge,
-                        summary: storySummary
+                        summary: storySummary,
+                        username: StoryUsername
                     })
                 });
 
-
-                if (response.status === 401) {
+                //If the API gives the response that the user is now not authorized then-
+                if (response.status === 401) 
+                {
     alert("Session expired. Please log in again.");
     localStorage.removeItem("jwtToken");  // Remove expired token
     window.location.href = "../loginPage/loginPage.html"; // Redirect to login

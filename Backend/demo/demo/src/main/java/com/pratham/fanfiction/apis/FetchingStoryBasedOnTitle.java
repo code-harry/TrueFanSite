@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,20 +30,24 @@ public class FetchingStoryBasedOnTitle
 	
 	
 	@GetMapping("/api/story")
+	@Cacheable(value = "stories", key = "#title")
 	public ResponseEntity<Stories> FetchStoryBasedOnTitle(@RequestParam(required=true) String title)
 	{
 		// 2. Perform the database lookup ONCE using findById, as 'title' is your @Id
         Optional<Stories> storyOptional = repo.findById(title);
 
         // 3. Process the result and return appropriate HTTP status
-        if (storyOptional.isPresent()) {
+        if (storyOptional.isPresent()) 
+        {
             Stories foundStory = storyOptional.get();
             logger.info("Story found: {}", foundStory);
             logger.info(foundStory.getAge());
             logger.info(foundStory.getLanguage());
             // System.out.println(foundStory); // For console debugging
             return new ResponseEntity<>(foundStory, HttpStatus.OK); // 200 OK with the story data
-        } else {
+        } 
+        else 
+        {
             logger.info("Story with title (ID) '{}' not found in the database. Returning 404 Not Found.", title);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
         }
