@@ -26,8 +26,25 @@
 
 
 // --- Page Initialization ---
-document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('jwtToken');
+//Old code without JQuery
+// document.addEventListener('DOMContentLoaded', () => {
+//     const token = localStorage.getItem('jwtToken');
+//     if (!token || isTokenExpired(token)) 
+//       {
+//         localStorage.removeItem('jwtToken');
+//         alert("Session expired or you are not logged in. Please log in again.");
+//         window.location.href = '../loginPage/loginPage.html';
+//         return;
+//     }
+    
+//     displayUsernameOnPage();
+//     setupEventListeners();
+//     loadMoreStories();
+// });
+
+//New code with JQuery
+$(document).on("DOMContentLoaded", function() {
+       const token = localStorage.getItem('jwtToken');
     if (!token || isTokenExpired(token)) 
       {
         localStorage.removeItem('jwtToken');
@@ -42,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
 // --- Global Variables ---
 let currentPage = 0;
 const pageSize = 10;
@@ -51,21 +69,49 @@ let allLoaded = false;
 
 // --- Event Listener Setup ---
 function setupEventListeners() {
-    const homeButton = document.getElementById('homeButton');
-    if (homeButton) {
-        homeButton.addEventListener('click', () => {
-            window.location.href = '../Home/home.html'; 
-        });
-    }
 
-    const logoutButton = document.getElementById('logoutButton');
-    if (logoutButton) {
+    //Old code without JQuery
+    // const homeButton = document.getElementById('homeButton');
+    // if (homeButton) {
+    //     homeButton.addEventListener('click', () => {
+    //         window.location.href = '../Home/home.html'; 
+    //     });
+    // }
+
+    //New code with JQuery
+    $("#homeButton").on("click",function()
+    {
+        window.location.href = '../Home/home.html'; 
+    });
+
+
+    //Old code without JQuery
+    // const logoutButton = document.getElementById('logoutButton');
+
+
+    //New code with JQuery
+    const logoutButton = $("#logoutButton")[0] ;
+
+    if (logoutButton) 
+    {
         logoutButton.addEventListener('click', handleLogout);
     }
 
-    window.addEventListener('scroll', () => {
+    //Old code without jquery
+    // window.addEventListener('scroll', () => {
+    //     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    //     if (clientHeight + scrollTop >= scrollHeight - 100) {
+    //         loadMoreStories();
+    //     }
+    // });
+
+
+    //New code with JQuery
+    $(window).on('scroll', function() 
+    {
         const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-        if (clientHeight + scrollTop >= scrollHeight - 100) {
+        if (clientHeight + scrollTop >= scrollHeight - 100) 
+            {
             loadMoreStories();
         }
     });
@@ -105,12 +151,16 @@ async function handleLogout() {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
-        if (response.ok) {
+        if (response.ok) 
+            {
             alert("You have been successfully logged out.");
-        } else {
+        } 
+        else 
+            {
             alert("Logout failed on server, but your session will be cleared locally.");
         }
-    } catch (error) {
+    } catch (error) 
+    {
         console.error('Logout error:', error);
         alert("An error occurred during logout. Your session will be cleared locally.");
     } finally {
@@ -120,21 +170,27 @@ async function handleLogout() {
 }
 
 
-async function loadMoreStories() {
+async function loadMoreStories() 
+{
     if (loading || allLoaded) return;
 
     loading = true;
     document.getElementById('loading').classList.remove('hidden');
 
-    try {
+    try 
+    {
         const stories = await fetchStories(currentPage, pageSize);
-        if (stories && stories.length > 0) {
+        if (stories && stories.length > 0) 
+            {
             appendStories(stories);
             currentPage++;
         }
-    } catch (error) {
+    } catch (error) 
+    {
         console.error("Failed to load stories:", error);
-    } finally {
+    } 
+    finally
+    {
         loading = false;
         document.getElementById('loading').classList.add('hidden');
     }
@@ -143,7 +199,8 @@ async function loadMoreStories() {
 
 // --- API and DOM Functions ---
 
-async function fetchStories(page, size) {
+async function fetchStories(page, size) 
+{
     const token = localStorage.getItem("jwtToken");
 
     try {
@@ -160,21 +217,25 @@ async function fetchStories(page, size) {
         }
 
         const stories = await response.json();
-        if (stories.length < size) {
+        if (stories.length < size) 
+            {
             allLoaded = true;
             document.getElementById('endOfFeed').classList.remove('hidden');
         }
         return stories;
 
-    } catch (error) {
+    } 
+    catch (error) 
+    {
         console.error("Fetch API failed:", error);
         allLoaded = true;
         return null;
     }
 }
 
-function appendStories(stories) {
-    const feed = document.getElementById('storyFeed');
+function appendStories(stories)
+ {
+        const feed = document.getElementById('storyFeed');
     stories.forEach(story => {
         const div = document.createElement('div');
         div.className = 'story-card';
@@ -217,7 +278,8 @@ function getJwtPayload(token) {
     }
 }
 
-function isTokenExpired(token) {
+function isTokenExpired(token) 
+{
     const payload = getJwtPayload(token);
     if (!payload || !payload.exp) return true;
     return payload.exp < (Date.now() / 1000);
