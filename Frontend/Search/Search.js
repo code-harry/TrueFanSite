@@ -1,3 +1,7 @@
+"use strict"
+
+
+
 // document.getElementById('searchForm').addEventListener('submit', async (e) => {
     
 //     // Prevent the form from refreshing the page

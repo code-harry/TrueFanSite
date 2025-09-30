@@ -1,3 +1,9 @@
+"use strict"
+
+
+
+
+
 //Authentication logic starts here
 //This function decodes the JWT token and returns the payload as a JavaScript object
 function getJwtPayload(token) 

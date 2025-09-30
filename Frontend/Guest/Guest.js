@@ -1,3 +1,7 @@
+"use strict"
+
+
+
 // The below code would have been uncommented if the authentication had to be here for this page
 
 // The authentication logic is handled here

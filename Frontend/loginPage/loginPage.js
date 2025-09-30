@@ -1,4 +1,5 @@
 // No authentication is needed for this page as it is accessible to all users
+"use strict"
 
 
 

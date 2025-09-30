@@ -1,3 +1,4 @@
+"use strict"
 
 
 // This function contains the logic to decode the JWT token and return the payload

@@ -1,4 +1,4 @@
-
+"use strict"
 
 
 
@@ -54,7 +54,7 @@ function setupEventListeners() {
     const homeButton = document.getElementById('homeButton');
     if (homeButton) {
         homeButton.addEventListener('click', () => {
-            window.location.href = '../GuestPage/guest.html'; 
+            window.location.href = '../Home/home.html'; 
         });
     }
 

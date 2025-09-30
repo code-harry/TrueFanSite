@@ -92,15 +92,18 @@ public class PostAStory
 
 	    if (s == null) 
 	    {
+	    	logger.info("The request body is miissing or invalid");
 	        return ResponseEntity.badRequest().body("Request body is missing or invalid");
 	    }
 
 	    if (storyNameAlreadyPresent(s.getTitle())) 
 	    {
+	    	logger.info("This name cannot be used for a story");
 	        return ResponseEntity.status(HttpStatus.CONFLICT).body("This name cannot be used for a story");
 	    }
 
 	    repo.save(s);
+	    logger.info("Story has been successfully saved");
 	    return ResponseEntity.status(HttpStatus.CREATED).body("Ok");
 	}
 	

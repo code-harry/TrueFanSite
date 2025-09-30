@@ -54,11 +54,39 @@
     </dependency>
 
 
+		<!-- This adds junit 5 to your spring project-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		
+		<!-- This adds support for junit 3 and 4 to the project-->
+    <groupId>org.junit.vintage</groupId>
+    <artifactId>junit-vintage-engine</artifactId>
+<!-- match your JUnit 5 version -->
+    <scope>test</scope>
+</dependency>
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>checkingforcustommavenrepository</artifactId>
@@ -148,6 +176,16 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
+
+
+
+<!-- These depndency help[[s to add rate limiting to the spring boot application-->
+<!--<dependency>
+    <groupId>com.github.vladimir-bukhtoyarov</groupId>
+    <artifactId>bucket4j-core</artifactId>
+    <version>8.4.0</version>
+</dependency>-->
+
 
 		
 	</dependencies>

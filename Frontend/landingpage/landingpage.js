@@ -1,3 +1,6 @@
+"use strict"
+
+
 let a = document.querySelector("#Login");
 let b = document.querySelector("#Sign");
 a.addEventListener("click", function () {
