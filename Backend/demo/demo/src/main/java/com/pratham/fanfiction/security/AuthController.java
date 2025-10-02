@@ -30,8 +30,8 @@ public class AuthController
 
 	
 	// Used to get data from the database
-    @Autowired 
-    AppUserRepository repo;
+//    @Autowired 
+//    AppUserRepository repo;
     
     @Autowired
     AppUserEntityRepository repoSQL;
@@ -135,7 +135,7 @@ public class AuthController
         
         
         //New code with SQL
-        u.setRole("USER");
+        u.setRole("ROLE_" + "USER");
         
         //Saving the user into the database.
         //Old code with mongo
@@ -165,7 +165,7 @@ public class AuthController
         String password = body.get("password");
         
         // Finding in the database if the user is present by username or not
-        AppUser u = repo.findById(username).orElse(null);
+        AppUserEntity u = repoSQL.findById(username).orElse(null);
         
         // If there is no username or if the password of the user does not match then it will return
         if (u == null || !passwordEncoder.matches(password, u.getPasswordHash())) 
@@ -198,14 +198,14 @@ public class AuthController
         }
         
         String username = principal.getName();
-        AppUser u = repo.findById(username).orElse(null);
+        AppUserEntity u = repoSQL.findById(username).orElse(null);
         if (u == null)
         	{
         	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         	}
        
         u.setTokenVersion(u.getTokenVersion() + 1); // increment to invalidate old JWTs
-        repo.save(u);
+        repoSQL.save(u);
         return ResponseEntity.ok("Logged out");
     }
 }

@@ -1,3 +1,6 @@
+//This was the old code which did not use SOLID principals
+
+
 package com.pratham.fanfiction.apis;
 
 import java.lang.reflect.Type;
