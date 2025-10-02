@@ -100,13 +100,30 @@
 		
 		
 		
+		<!-- Dependency for cachiong-->
+		<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+</dependency>
 		
 		
+		<!-- This is a very poweful depemndency. Once this is added starter-cache uses the data structures provided by caffeine to store the cache-->
+		<dependency>
+    <groupId>com.github.ben-manes.caffeine</groupId>
+    <artifactId>caffeine</artifactId>
+</dependency>
 		
 		
-		
-		
-		
+		<!-- These are dependencies are caffeine-->
+		<dependency>
+    <groupId>org.ehcache</groupId>
+    <artifactId>ehcache</artifactId>
+</dependency>
+<!-- We need to create a file called ehcache.xml to configure them-->
+<dependency>
+    <groupId>javax.cache</groupId>
+    <artifactId>cache-api</artifactId>
+</dependency>
 		
 		
 		

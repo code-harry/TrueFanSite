@@ -4,6 +4,7 @@ package com.pratham.fanfiction.apis.storyFetcherTitle;
 
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,11 @@ public class StoryController {
     }
 
     @GetMapping("/story")
+//    @Cacheable(
+//            value = "stories-search-title",
+//            key = "{#title}",
+//            unless = "#result.isEmpty()"
+//        )
     public ResponseEntity<Stories> fetchStoryByTitle(@RequestParam String title) {
         Optional<Stories> story = storyService.getStoryByTitle(title);
 

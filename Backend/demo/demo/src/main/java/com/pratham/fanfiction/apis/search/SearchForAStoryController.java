@@ -1,10 +1,14 @@
 package com.pratham.fanfiction.apis.search;
 
 import com.pratham.fanfiction.mongo.Stories;
+
+
+
 import com.pratham.fanfiction.apis.search.StorySearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +24,11 @@ public class SearchForAStoryController {
     private StorySearchService storySearchService;
 
     @GetMapping("/search")
+//    @Cacheable(
+//            value = "stories-search",
+//            key = "{#title, #language, #genre, #media, #age}",
+//            unless = "#result.isEmpty()"
+//        )
     public List<Stories> searchStories(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String language,
