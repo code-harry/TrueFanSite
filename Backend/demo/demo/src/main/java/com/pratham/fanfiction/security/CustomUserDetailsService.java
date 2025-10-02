@@ -7,6 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.pratham.fanfiction.sql.AppUserEntity;
+import com.pratham.fanfiction.sql.AppUserEntityRepository;
+
 import static org.springframework.security.core.userdetails.User.withUsername;
 
 
@@ -21,12 +25,19 @@ public class CustomUserDetailsService implements UserDetailsService
     private AppUserRepository repo;
 
     
-    
+    @Autowired 
+    private AppUserEntityRepository repoSQL;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
     {
-        AppUser user = repo.findById(username).orElseThrow(() -> new UsernameNotFoundException("No user"));
+    	
+    	//oLD CODE WITH MongoDb
+//        AppUser user = repo.findById(username).orElseThrow(() -> new UsernameNotFoundException("No user"));
+        
+    	
+    	//New code with SQL
+        AppUserEntity user = repoSQL.findByUsername(username);
         
         
         //Returns a username fetched by the database

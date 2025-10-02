@@ -14,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.pratham.fanfiction.sql.AppUserEntity;
+import com.pratham.fanfiction.sql.AppUserEntityRepository;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.IOException;
 
@@ -33,6 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter // which ensur
     // Used to get data from mongodb
     @Autowired 
     AppUserRepository repo;
+    
+    @Autowired
+    AppUserEntityRepository repoSQL;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -49,7 +55,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter // which ensur
                 String username = claims.getSubject();
                 int tokenVersionInToken = claims.get("tv", Integer.class);
 
-                AppUser user = repo.findById(username).orElse(null);
+                
+                //Old code with MongoDb
+//                AppUser user = repo.findById(username).orElse(null);
+                
+                
+                //New code with SQL
+                  AppUserEntity user =     repoSQL.findByUsername(username);
+                
+                
+                
                 if (user != null && user.getTokenVersion() == tokenVersionInToken) 
                 {
                     // build authentication and set context

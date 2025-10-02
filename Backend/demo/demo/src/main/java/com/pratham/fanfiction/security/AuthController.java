@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pratham.fanfiction.sql.AppUserEntity;
+import com.pratham.fanfiction.sql.AppUserEntityRepository;
+
 import ch.qos.logback.classic.Logger;
 
 //import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -30,6 +33,8 @@ public class AuthController
     @Autowired 
     AppUserRepository repo;
     
+    @Autowired
+    AppUserEntityRepository repoSQL;
     
     
     // Used to encode password
@@ -54,45 +59,89 @@ public class AuthController
     	//getting the username from the body
         String username = body.get("username");
 
-        Optional<AppUser>listOfUsername = repo.findByUsername(username);
+        //Old code with mongo
+//        Optional<AppUser>listOfUsername = repo.findByUsername(username);
         
-        if(listOfUsername.isPresent())
+        
+        //New code with SQL
+        AppUserEntity ListOfUserNameSQL = repoSQL.findByUsername(username);
+        
+        //Old code with mongo
+//        if(listOfUsername.isPresent())
+//        {
+//        	 return ResponseEntity.status(HttpStatus.CONFLICT)
+//                     .body(Map.of(
+//                         "message", "This username cannot be used"
+//                     ));
+//        }
+        
+        //New code with SQL
+        if(ListOfUserNameSQL!=null)
         {
         	 return ResponseEntity.status(HttpStatus.CONFLICT)
-                     .body(Map.of(
-                         "message", "This username cannot be used"
-                     ));
+                   .body(Map.of(
+                       "message", "This username cannot be used"
+                   ));
         }
         
         
         //getting the password from the body
         String password = body.get("password");
         
-        //If the username with which the person is trying to sign up is already taken then it will send a conflict
-        if (repo.existsById(username)) 
-        {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken");
-        }
+//        //If the username with which the person is trying to sign up is already taken then it will send a conflict
+//        if (repo.existsById(username)) 
+//        {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already taken");
+//        }
         
         //Creating a user
-        AppUser u = new AppUser();
+        //Old code with mongo
+//        AppUser u = new AppUser();
+        
+        //New code with SQL
+        AppUserEntity u = new AppUserEntity();
         
         //setting the username
+        //Old code with mongo
+//        u.setUsername(username);
+        
+        
+        //New code with SQL
         u.setUsername(username);
+        
         
         //Encoding the password
         String encodedPassword = passwordEncoder.encode(password);
         
         //Setting the password
+        //Old code with mongo
+//        u.setPasswordHash(encodedPassword);
+        
+        //New code with SQL
         u.setPasswordHash(encodedPassword);
         
         //Setting the token number as 0
+        //Old code with mongo
+//        u.setTokenVersion(0);
+        
+        
+        //New code with SQL
         u.setTokenVersion(0);
         
+        
+        //Old code with mongo
+//        u.setRole("USER");
+        
+        
+        
+        //New code with SQL
         u.setRole("USER");
         
         //Saving the user into the database.
-        repo.save(u);
+        //Old code with mongo
+//        repo.save(u);
+        
+       repoSQL.save(u);
         
         //generating the token
         String token = jwtUtil.generateToken(username, u.getTokenVersion());
