@@ -1,0 +1,862 @@
+
+
+===== ./feed/Feed.java =====
+
+
+//package com.pratham.fanfiction.apis.feed;
+//
+//
+//import java.util.List;
+//
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.pratham.fanfiction.mongo.Stories;
+//
+//
+//@RestController
+//@CrossOrigin(origins = "*")
+//public class Feed 
+//{
+//
+//	@Autowired
+//	StoryServiceFeed feed;
+//	
+//	private static Logger logger = LoggerFactory.getLogger(Feed.class);
+//	
+//	@GetMapping("/api/stories")
+//	public List<Stories> getStories(
+//	    @RequestParam(defaultValue = "0") int page,
+//	    @RequestParam(defaultValue = "10") int size) 
+//	{
+//		logger.info("Feed API was called");
+//	    
+//	    return feed.get(page,size);
+//	}
+//
+//}
+
+
+===== ./feed/StoryServiceFeed.java =====
+
+
+//package com.pratham.fanfiction.apis.feed;
+//
+//import java.util.List;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.domain.Page;
+//import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.Pageable;
+//import org.springframework.stereotype.Service;
+//
+//import com.pratham.fanfiction.mongo.Stories;
+//import com.pratham.fanfiction.mongo.StoryRepository;
+//
+//@Service
+//public class StoryServiceFeed 
+//{
+//	
+//	@Autowired
+//	private StoryRepository repo;
+//	
+//	
+//	
+//	List<Stories> get(int page,int size)
+//	{
+//		Pageable pageable = PageRequest.of(page, size);
+//		Page<Stories> storyPage = repo.findAll(pageable);
+//	    return storyPage.getContent();
+//	}
+//
+//}
+
+
+===== ./FetchingStoryBasedOnTitle.java =====
+
+
+//Old code which did not follow SOLID principals
+
+
+
+
+
+//package com.pratham.fanfiction.apis;
+//
+//import java.util.Optional;
+//
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.pratham.fanfiction.mongo.Stories;
+//import com.pratham.fanfiction.mongo.StoryRepository;
+//
+//@RestController
+//@CrossOrigin(origins = "*")
+//public class FetchingStoryBasedOnTitle 
+//{
+//	
+//	
+//	@Autowired
+//	private StoryRepository repo;
+//	
+//	
+//	private static Logger logger =LoggerFactory.getLogger(FetchingStoryBasedOnTitle.class);
+//	
+//	
+//	@GetMapping("/api/story")
+//	public ResponseEntity<Stories> FetchStoryBasedOnTitle(@RequestParam(required=true) String title)
+//	{
+//		// 2. Perform the database lookup ONCE using findById, as 'title' is your @Id
+//        Optional<Stories> storyOptional = repo.findById(title);
+//
+//        // 3. Process the result and return appropriate HTTP status
+//        if (storyOptional.isPresent()) {
+//            Stories foundStory = storyOptional.get();
+//            logger.info("Story found: {}", foundStory);
+//            logger.info(foundStory.getAge());
+//            logger.info(foundStory.getLanguage());
+//            // System.out.println(foundStory); // For console debugging
+//            return new ResponseEntity<>(foundStory, HttpStatus.OK); // 200 OK with the story data
+//        } else {
+//            logger.info("Story with title (ID) '{}' not found in the database. Returning 404 Not Found.", title);
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 Not Found
+//        }
+//        
+//	}
+//
+//}
+
+
+===== ./PostAStory.java =====
+
+
+//This was the old code which did not use SOLID principals
+
+
+package com.pratham.fanfiction.apis;
+
+import java.lang.reflect.Type;
+import java.net.URI;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class PostAStory 
+{
+	
+	@Autowired
+	private StoryRepository repo;
+	
+	private static Logger logger = LoggerFactory.getLogger(PostAStory.class);
+	
+	
+	public boolean storyNameAlreadyPresent(String t)
+	{
+		logger.info("Posting a story has been called");
+		if(repo.findById(t).isPresent())
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	
+	
+//	@PostMapping("/api/stories")
+//	public ResponseEntity<String> postAStory(RequestEntity<Stories> req)
+//	{
+//		logger.info("An Api to post the story has been called.");
+//		Stories s = req.getBody();
+//		HttpHeaders head =req.getHeaders();
+//		HttpMethod method = req.getMethod();
+//		URI url= req.getUrl();
+//		Type type =  req.getType();
+////		ResponseEntity<Stories> res = new ResponseEntity<Stories>(null);
+//		
+//		if(storyNameAlreadyPresent(s.getTitle())==true)
+//		{
+//			return ResponseEntity
+//                    .status(HttpStatus.CONFLICT)
+//                    .body("This name cannot be used for a story.");
+//		}
+//		
+//		repo.save(s);
+//		return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body("Story saved successfully.");
+//	}
+	
+//	@PostMapping("/api/stories")
+//	public String postAStory(@RequestBody  Stories s)
+//	{
+//		logger.info("An Api to post the story has been called.");
+//		
+//		if(storyNameAlreadyPresent(s.getTitle())==true)
+//		{
+//			return "This name cannot be used for a story";
+//		}
+//		
+//		repo.save(s);
+//		return "Ok";
+//	}
+	
+	
+	@PostMapping("/api/stories")
+	public ResponseEntity<String> postAStory(RequestEntity<Stories> requestEntity) 
+	{
+	    logger.info("An API to post the story has been called.");
+
+	    Stories s = requestEntity.getBody();
+
+	    if (s == null) 
+	    {
+	    	logger.info("The request body is miissing or invalid");
+	        return ResponseEntity.badRequest().body("Request body is missing or invalid");
+	    }
+
+	    if (storyNameAlreadyPresent(s.getTitle())) 
+	    {
+	    	logger.info("This name cannot be used for a story");
+	        return ResponseEntity.status(HttpStatus.CONFLICT).body("This name cannot be used for a story");
+	    }
+
+	    repo.save(s);
+	    logger.info("Story has been successfully saved");
+	    return ResponseEntity.status(HttpStatus.CREATED).body("Ok");
+	}
+	
+	
+	
+	
+	
+	
+//	@RequestMapping(path="/api/stories", method = RequestMethod.POST)
+//	public String postAStory(@RequestBody Stories s)
+//	{
+//logger.info("An Api to post the story has been called.");
+//		
+//		if(storyNameAlreadyPresent(s.getTitle())==true)
+//		{
+//			return "This name cannot be used for a story";
+//		}
+//		
+//		repo.save(s);
+//		return "Ok";
+//	}
+}
+
+
+===== ./ReturnAfeed.java =====
+
+
+package com.pratham.fanfiction.apis;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
+
+import org.springframework.data.domain.Pageable;
+
+@RestController
+@CrossOrigin(origins = "*")
+public class ReturnAfeed 
+{
+
+	@Autowired
+	StoryRepository repo;
+	
+	private static Logger logger = LoggerFactory.getLogger(ReturnAfeed.class);
+	
+	@GetMapping("/api/stories")
+	public List<Stories> getStories(
+	    @RequestParam(defaultValue = "0") int page,
+	    @RequestParam(defaultValue = "10") int size) 
+	{
+		logger.info("Feed API was called");
+	    
+	    Pageable pageable = PageRequest.of(page, size);
+	    Page<Stories> storyPage = repo.findAll(pageable);
+	    return storyPage.getContent();
+	}
+
+}
+
+
+===== ./search/SearchForAStoryController.java =====
+
+
+package com.pratham.fanfiction.apis.search;
+
+import com.pratham.fanfiction.mongo.Stories;
+
+
+
+import com.pratham.fanfiction.apis.search.StorySearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = "*")
+@RestController
+@RequestMapping("/api")
+public class SearchForAStoryController {
+
+    private static final Logger logger = LoggerFactory.getLogger(SearchForAStoryController.class);
+
+    @Autowired
+    private StorySearchService storySearchService;
+
+    @GetMapping("/search")
+//    @Cacheable(
+//            value = "stories-search",
+//            key = "{#title, #language, #genre, #media, #age}",
+//            unless = "#result.isEmpty()"
+//        )
+    public List<Stories> searchStories(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String language,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String media,
+            @RequestParam(required = false) String age
+    ) {
+        logger.info("Search API called");
+        return storySearchService.searchStories(title, language, genre, media, age);
+    }
+}
+
+
+===== ./search/StorySearchService.java =====
+
+
+
+package com.pratham.fanfiction.apis.search;
+
+import com.pratham.fanfiction.mongo.Stories;
+import java.util.List;
+
+public interface StorySearchService {
+    List<Stories> searchStories(String title, String language, String genre, String media, String age);
+}
+
+
+===== ./search/StorySearchServiceImpl.java =====
+
+
+package com.pratham.fanfiction.apis.search;
+
+import com.pratham.fanfiction.mongo.Stories;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
+@Service
+public class StorySearchServiceImpl implements StorySearchService {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Override
+    public List<Stories> searchStories(String title, String language, String genre, String media, String age) {
+        Query query = new Query();
+        List<Criteria> criteriaList = new ArrayList<>();
+
+        if (title != null && !title.isBlank()) {
+            criteriaList.add(Criteria.where("title").regex(Pattern.quote(title), "i"));
+        }
+        if (language != null && !language.isBlank()) {
+            criteriaList.add(Criteria.where("language").regex(Pattern.quote(language), "i"));
+        }
+        if (genre != null && !genre.isBlank()) {
+            criteriaList.add(Criteria.where("genre").regex(Pattern.quote(genre), "i"));
+        }
+        if (media != null && !media.isBlank()) {
+            criteriaList.add(Criteria.where("media").regex(Pattern.quote(media), "i"));
+        }
+        if (age != null && !age.isBlank()) {
+            criteriaList.add(Criteria.where("age").regex(Pattern.quote(age), "i"));
+        }
+
+        if (!criteriaList.isEmpty()) {
+            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
+        }
+
+        return mongoTemplate.find(query, Stories.class);
+    }
+}
+
+
+===== ./SearchForAStory.java =====
+
+
+//package com.pratham.fanfiction.apis;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import com.pratham.fanfiction.mongo.Stories;
+//import com.pratham.fanfiction.mongo.StoryRepository;
+//
+//
+//
+//@CrossOrigin(origins = "*") // Or restrict to specific origin
+//@RestController
+//public class SearchForAStory 
+//{
+//	
+//	
+//	private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SearchForAStory.class);
+//	
+//	@Autowired
+//	private StoryRepository repo;
+//	
+//	
+//
+//
+//
+//	@GetMapping("/api/search")
+//    public List<Stories> searchStories
+//    (
+//        @RequestParam(required = false) String title,
+//        @RequestParam(required = false) String language,
+//        @RequestParam(required = false) String genre,
+//        @RequestParam(required = false) String media,
+//        @RequestParam(required = false) String age
+//    ) 
+//	{
+//		logger.info("Search Api is Called****");
+//		
+//		// Checking if all fields have been given a value or not
+//		if(title!=null && language!=null && genre!=null && media!=null && age!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(
+//		            title, language, genre,media,age
+//		        );
+//		}
+//		
+//		// Checking if 4 fields have been given a value so there will be 5 like this.
+//		
+//		//age is not present in it
+//		if(title!=null && language!=null && genre!=null && media!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndGenreIgnoreCaseAndMediaContainingIgnoreCase(
+//				     title, language, genre, media);
+//		}
+//		
+//		//media is not present in it
+//		if(title!=null && language!=null && genre!=null && age!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCase(
+//				     title, language, genre, age);
+//		}
+//		
+//		//age is not present in it
+//		if(title!=null && language!=null && age!=null && media!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndGenreIgnoreCaseAndMediaContainingIgnoreCase(
+//				     title,  language, genre, media);
+//		}
+//		
+//		//language is not present in it
+//		if(title!=null && age!=null && media!=null && genre!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(
+//				     title,  genre,  age,  media);
+//		}
+//		
+//		
+//		// title is not present in it
+//		if(language!=null && genre!=null && media!=null && age!=null)
+//		{
+//			return repo.findByLanguageIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(
+//				     language, genre,  age,  media);
+//		}
+//		
+//		// If three fields are present
+//		// age and media are absent
+//		if(title!=null && language!=null && genre!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndGenreIgnoreCase(title,language,genre);
+//		}
+//		
+//		
+//		// media and genre are absent
+//		if(title!=null &&  language!=null && age!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndAgeContainingIgnoreCase(title,language,age);
+//		}
+//		
+//		if(title!=null && language!=null && media!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCaseAndMediaContainingIgnoreCase(title,language,media);
+//		}
+//		
+//		
+//		
+//		
+//		if(title!=null && genre!=null && age!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCase( title,genre,age);
+//		}
+//		
+//		
+//		
+//		if(title!=null && genre!=null && media!=null)
+//		{
+//			return repo.findByTitleContainingIgnoreCaseAndGenreIgnoreCaseAndMediaContainingIgnoreCase(title, genre,media);
+//		}
+//		
+//		if(title!=null && age!=null && media!=null)
+//		{
+//			return repo.findByLanguageIgnoreCaseAndGenreIgnoreCaseAndAgeContainingIgnoreCase(language,genre,age);
+//		}
+//		
+//		
+//		
+//		if(language!=null && genre!=null && media!=null)
+//		{
+//			return repo.findByLanguageIgnoreCaseAndGenreIgnoreCaseAndMediaContainingIgnoreCase(language,genre,media);
+//		}
+//		
+//		if(language!=null && age!=null && media!=null)
+//		{
+//			return repo.findByLanguageIgnoreCaseAndAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(language, age, media);
+//		}
+//			
+//			if(genre!=null && age!=null && media!=null)
+//			{
+//				return repo.findByGenreIgnoreCaseAndAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(genre,age,media);
+//			}
+//			
+//			
+//			
+//			
+//			// Two field are there if
+//			if(title!=null && language!=null)
+//			{
+//				return repo.findByTitleContainingIgnoreCaseAndLanguageIgnoreCase(title, language);
+//			}
+//			
+//			
+//			if(title!=null && genre!=null)
+//			{
+//				return repo.findByTitleContainingIgnoreCaseAndGenreIgnoreCase(title,genre);
+//			}
+//			
+//			if(title!=null && age!=null)
+//			{
+//				return repo.findByTitleContainingIgnoreCaseAndAgeContainingIgnoreCase(title, age);
+//			}
+//			
+//			if(title!=null && media!=null)
+//			{
+//				return repo.findByTitleContainingIgnoreCaseAndMediaContainingIgnoreCase(title,media);
+//			}
+//			if(language!=null && genre!=null)
+//			{
+//				return repo.findByLanguageIgnoreCaseAndGenreIgnoreCase(language, genre);
+//			}
+//			if(language!=null && age!=null)
+//			{
+//				return repo.findByLanguageIgnoreCaseAndAgeContainingIgnoreCase(language, age);
+//			}
+//			
+//			
+//			if(language!=null && media!=null)
+//			{
+//				return repo.findByLanguageIgnoreCaseAndMediaContainingIgnoreCase(language, media);
+//			}
+//			if(genre!=null && age!=null)
+//			{
+//				return repo.findByGenreIgnoreCaseAndAgeContainingIgnoreCase(genre, age);
+//			}
+//			
+//			if(genre!=null && media!=null)
+//			{
+//				return repo.findByGenreIgnoreCaseAndMediaContainingIgnoreCase( genre, media);
+//			}
+//			
+//			
+//			if(age!=null && media!=null)
+//			{
+//				return repo.findByAgeContainingIgnoreCaseAndMediaContainingIgnoreCase(age, media);
+//			}
+//			if(title!=null)
+//			{
+//				return repo.findByTitleContainingIgnoreCase(title);
+//			}
+//			
+//			if(language!=null)
+//			{
+//				return repo.findByLanguageIgnoreCase(language);
+//			}
+//			if(genre!=null)
+//			{
+//				return repo.findByGenreIgnoreCase(genre);
+//			}
+//			if(age!=null)
+//			{
+//				return repo.findByAgeContainingIgnoreCase( age);
+//			}
+//			if( media!=null)
+//			{
+//				return repo.findByMediaContainingIgnoreCase(media);
+//			}
+//
+//			
+//			
+//			List<Stories>l = new ArrayList<>();
+//			return l;
+//    }
+//
+//	
+//
+////	@GetMapping("/hello-world")
+////	public String hello()
+////	{
+////		return "Hello-World";
+////	}
+//	
+//	
+//}
+
+
+//package com.pratham.fanfiction.apis;
+//
+//import com.pratham.fanfiction.mongo.Stories;
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.mongodb.core.MongoTemplate;
+//import org.springframework.data.mongodb.core.query.Criteria;
+//import org.springframework.data.mongodb.core.query.Query;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.GetMapping;
+//import org.springframework.web.bind.annotation.RequestParam;
+//import org.springframework.web.bind.annotation.RestController;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.regex.Pattern;
+//
+//@CrossOrigin(origins = "*")
+//@RestController
+//public class SearchForAStory {
+//
+//    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SearchForAStory.class);
+//
+//    // Inject MongoTemplate for building dynamic queries instead of the repository.
+//    @Autowired
+//    private MongoTemplate mongoTemplate;
+//
+//    /**
+//     * Searches for stories using a dynamic query built with MongoTemplate.
+//     * This avoids the need for a complex chain of if-else statements.
+//     *
+//     * @param title    (optional) The title of the story to search for.
+//     * @param language (optional) The language of the story.
+//     * @param genre    (optional) The genre of the story.
+//     * @param media    (optional) The media type (e.g., book, movie).
+//     * @param age      (optional) The age rating of the story.
+//     * @return A list of stories matching the provided criteria.
+//     */
+//    @GetMapping("/api/search")
+//    public List<Stories> searchStories(
+//            @RequestParam(required = false) String title,
+//            @RequestParam(required = false) String language,
+//            @RequestParam(required = false) String genre,
+//            @RequestParam(required = false) String media,
+//            @RequestParam(required = false) String age
+//    ) {
+//        logger.info("Search API is called with MongoTemplate");
+//
+//        // The Query object will hold all our search conditions.
+//        Query query = new Query();
+//        List<Criteria> criteriaList = new ArrayList<>();
+//
+//        // For each request parameter, if it's not null or empty, create a
+//        // case-insensitive regex criterion and add it to our list.
+//        if (title != null && !title.isBlank()) {
+//            criteriaList.add(Criteria.where("title").regex(Pattern.quote(title), "i"));
+//        }
+//        if (language != null && !language.isBlank()) {
+//            criteriaList.add(Criteria.where("language").regex(Pattern.quote(language), "i"));
+//        }
+//        if (genre != null && !genre.isBlank()) {
+//            criteriaList.add(Criteria.where("genre").regex(Pattern.quote(genre), "i"));
+//        }
+//        if (media != null && !media.isBlank()) {
+//            criteriaList.add(Criteria.where("media").regex(Pattern.quote(media), "i"));
+//        }
+//        if (age != null && !age.isBlank()) {
+//            criteriaList.add(Criteria.where("age").regex(Pattern.quote(age), "i"));
+//        }
+//
+//        // If any criteria were added, combine them all with an "AND" operator.
+//        // This means a document must match ALL provided criteria to be returned.
+//        if (!criteriaList.isEmpty()) {
+//            query.addCriteria(new Criteria().andOperator(criteriaList.toArray(new Criteria[0])));
+//        }
+//
+//        // Execute the dynamically built query against the "stories" collection.
+//        // If no criteria were provided, it will return all stories.
+//        return mongoTemplate.find(query, Stories.class);
+//    }
+//}
+
+
+===== ./storyFetcherTitle/StoryController.java =====
+
+
+package com.pratham.fanfiction.apis.storyFetcherTitle;
+
+
+
+import java.util.Optional;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.pratham.fanfiction.mongo.Stories;
+
+
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/api")
+public class StoryController {
+
+    private final StoryService storyService;
+
+    public StoryController(StoryService storyService) {
+        this.storyService = storyService;
+    }
+
+    @GetMapping("/story")
+//    @Cacheable(
+//            value = "stories-search-title",
+//            key = "{#title}",
+//            unless = "#result.isEmpty()"
+//        )
+    public ResponseEntity<Stories> fetchStoryByTitle(@RequestParam String title) {
+        Optional<Stories> story = storyService.getStoryByTitle(title);
+
+        return story.map(s -> new ResponseEntity<>(s, HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+}
+
+
+===== ./storyFetcherTitle/StoryService.java =====
+
+
+package com.pratham.fanfiction.apis.storyFetcherTitle;
+
+import java.util.Optional;
+import com.pratham.fanfiction.mongo.Stories;
+
+public interface StoryService {
+    Optional<Stories> getStoryByTitle(String title);
+}
+
+===== ./storyFetcherTitle/StoryServiceImpl.java =====
+
+
+package com.pratham.fanfiction.apis.storyFetcherTitle;
+
+
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.pratham.fanfiction.mongo.Stories;
+import com.pratham.fanfiction.mongo.StoryRepository;
+
+@Service
+public class StoryServiceImpl implements StoryService {
+
+    private final StoryRepository repo;
+    private static final Logger logger = LoggerFactory.getLogger(StoryServiceImpl.class);
+
+    @Autowired
+    public StoryServiceImpl(StoryRepository repo) {
+        this.repo = repo;
+    }
+
+    @Override
+    public Optional<Stories> getStoryByTitle(String title) {
+        Optional<Stories> storyOptional = repo.findById(title);
+
+        if (storyOptional.isPresent()) {
+            logger.info("Story found: {}", storyOptional.get());
+        } else {
+            logger.info("Story with title '{}' not found.", title);
+        }
+
+        return storyOptional;
+    }
+}
