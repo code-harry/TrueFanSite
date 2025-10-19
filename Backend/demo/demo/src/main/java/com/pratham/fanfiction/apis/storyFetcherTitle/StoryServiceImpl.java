@@ -13,18 +13,21 @@ import com.pratham.fanfiction.mongo.Stories;
 import com.pratham.fanfiction.mongo.StoryRepository;
 
 @Service
-public class StoryServiceImpl implements StoryService {
+public class StoryServiceImpl implements StoryService 
+{
 
     private final StoryRepository repo;
     private static final Logger logger = LoggerFactory.getLogger(StoryServiceImpl.class);
 
     @Autowired
-    public StoryServiceImpl(StoryRepository repo) {
+    public StoryServiceImpl(StoryRepository repo) 
+    {
         this.repo = repo;
     }
 
     @Override
-    public Optional<Stories> getStoryByTitle(String title) {
+    public Optional<Stories> getStoryByTitle(String title) 
+    {
         Optional<Stories> storyOptional = repo.findById(title);
 
         if (storyOptional.isPresent()) {

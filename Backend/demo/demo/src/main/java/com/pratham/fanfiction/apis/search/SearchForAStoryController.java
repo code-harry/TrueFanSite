@@ -16,7 +16,8 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
-public class SearchForAStoryController {
+public class SearchForAStoryController 
+{
 
     private static final Logger logger = LoggerFactory.getLogger(SearchForAStoryController.class);
 
@@ -35,7 +36,8 @@ public class SearchForAStoryController {
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String media,
             @RequestParam(required = false) String age
-    ) {
+    ) 
+    {
         logger.info("Search API called");
         return storySearchService.searchStories(title, language, genre, media, age);
     }

@@ -4,17 +4,25 @@
            xmlns:tns="http://www.pratham.com/fanfiction/story"
            elementFormDefault="qualified">
 
+
+<!-- Definition for the incoming request message-->
     <xs:element name="getStoryRequest">
         <xs:complexType>
+        <!-- Indicates that the request element will contain other elements-->
             <xs:sequence>
+            <!-- Specifies that the elements must appear in this exact order-->
                 <xs:element name="title" type="xs:string"/>
+                <!-- pecifies that a child element named title which must contain character data-->
             </xs:sequence>
         </xs:complexType>
     </xs:element>
 
+
+<!-- Definition for the outgoing response message-->
     <xs:element name="getStoryResponse">
         <xs:complexType>
             <xs:sequence>
+            <!--xs:sequence Specifies that the element must occur in this exact order -->
                 <xs:element name="title" type="xs:string"/>
                 <xs:element name="content" type="xs:string"/>
                 <xs:element name="language" type="xs:string"/>
