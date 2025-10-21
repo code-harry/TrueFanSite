@@ -154,11 +154,11 @@
 		
 		
 		
-		<dependency>
+		<!--<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>checkingforcustommavenrepository</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 		
 		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-boot-starter -->
 <!--<dependency>
