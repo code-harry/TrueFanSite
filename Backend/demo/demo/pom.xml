@@ -254,7 +254,12 @@
   <version>8.14.0</version>
 </dependency>
 
-
+<!--This dependency is used to add bulkhead.. maximum number of threads that can be processes at a time -->
+<dependency>
+    <groupId>io.github.resilience4j</groupId>
+    <artifactId>resilience4j-spring-boot3</artifactId>
+    <version>2.2.0</version>
+</dependency>
 
 
 <!-- GrahhSQL dependencies-->

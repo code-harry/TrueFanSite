@@ -3,7 +3,12 @@ package com.pratham.fanfiction.rateLimiting;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Refill;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import com.pratham.fanfiction.apis.storyFetcherTitle.StoryServiceImpl;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -25,6 +30,8 @@ public class RateLimitFilterAccToIpAndApi implements Filter
     // Key: ip + api path -> Bucket
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 
+    private static final Logger logger = LoggerFactory.getLogger(RateLimitFilterAccToIpAndApi.class);
+    
     private Bucket newBucket() 
     {
         // Allow 20 requests per minute per IP per API
@@ -50,6 +57,7 @@ public class RateLimitFilterAccToIpAndApi implements Filter
             throws IOException, ServletException 
     {
 
+    	logger.info("Request is going through te Limiting for now");
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String ip = httpRequest.getRemoteAddr();
         String path = httpRequest.getRequestURI();
