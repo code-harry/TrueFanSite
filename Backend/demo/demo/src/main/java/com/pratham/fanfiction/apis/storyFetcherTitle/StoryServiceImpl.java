@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ import com.pratham.fanfiction.mongo.Stories;
 import com.pratham.fanfiction.mongo.StoryRepository;
 
 @Service
+@Scope("singleton") // explicit
 public class StoryServiceImpl implements StoryService 
 {
 

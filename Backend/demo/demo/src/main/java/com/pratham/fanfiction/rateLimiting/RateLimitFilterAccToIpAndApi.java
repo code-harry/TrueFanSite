@@ -6,6 +6,7 @@ import io.github.bucket4j.Refill;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.pratham.fanfiction.apis.storyFetcherTitle.StoryServiceImpl;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@Scope("singleton") // explicit
 public class RateLimitFilterAccToIpAndApi implements Filter 
 {
 

@@ -2,6 +2,7 @@ package com.pratham.fanfiction.security;
 
 //import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,12 +16,14 @@ import static org.springframework.security.core.userdetails.User.withUsername;
 
 
 @Service
+@Scope("singleton") // explicit
 public class CustomUserDetailsService implements UserDetailsService 
 {
 
 	
 	
 	//Represents your mongoDb interface which helps to fetch users
+	// This is no longer in USE
     @Autowired
     private AppUserRepository repo;
 

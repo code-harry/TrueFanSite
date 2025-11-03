@@ -1,9 +1,11 @@
 package com.pratham.fanfiction.bulkhead;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
+@Scope("singleton") // explicit
 public class MyFallbackHandler 
 {
 

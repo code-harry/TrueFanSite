@@ -2,6 +2,7 @@ package com.pratham.fanfiction.apis.search;
 
 import com.pratham.fanfiction.mongo.Stories;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
+@Scope("singleton") // explicit
 public class StorySearchServiceImpl implements StorySearchService {
 
     @Autowired

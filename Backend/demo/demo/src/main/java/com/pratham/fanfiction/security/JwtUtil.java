@@ -4,12 +4,14 @@ package com.pratham.fanfiction.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
 @Component
+@Scope("singleton") // explicit
 public class JwtUtil 
 {
  private final Key key = Keys.hmacShaKeyFor("replace-this-with-a-very-long-secret-key-of-at-least-256-bits".getBytes());// Consider it an encryption key

@@ -184,6 +184,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -199,6 +200,7 @@ import io.jsonwebtoken.Claims;
 import java.io.IOException;
 
 @Component
+@Scope("singleton") // explicit
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired

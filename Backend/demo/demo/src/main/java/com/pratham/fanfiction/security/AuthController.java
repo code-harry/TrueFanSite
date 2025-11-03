@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ import ch.qos.logback.classic.Logger;
 // This defines APIS for login, signup, and logout
 @RestController
 @RequestMapping("/auth")
+@Scope("singleton") // explicit
 public class AuthController 
 {
 
@@ -203,8 +205,13 @@ public class AuthController
         	{
         	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         	}
-       
-        u.setTokenVersion(u.getTokenVersion() + 1); // increment to invalidate old JWTs
+        if (u.getTokenVersion() == Integer.MAX_VALUE) 
+        {
+            u.setTokenVersion(0); // or reset to 1
+        } else {
+            u.setTokenVersion(u.getTokenVersion() + 1);
+        }
+//        u.setTokenVersion(u.getTokenVersion() + 1); // increment to invalidate old JWTs
         repoSQL.save(u);
         return ResponseEntity.ok("Logged out");
     }
